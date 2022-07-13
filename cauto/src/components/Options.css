@@ -27,3 +27,19 @@ select {
   max-width: 350px;
   margin: 0.5em auto;
 }
+
+.config-btn {
+  border: solid #1e90ff 3px;
+  border-radius: 10px;
+  background-color: unset;
+  font-size: 1.3em;
+  padding: 15px 30px;
+  margin: 1em 0;
+  color: #1e90ff;
+}
+
+.config-btn:hover {
+  background-color: #1e90ff;
+  color: black;
+  cursor: pointer;
+}

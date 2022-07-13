@@ -105,6 +105,11 @@ const Options = () => {
     setIdxSelected((oldi) => index);
     setConfig((oldConf) => allConfigs[index]);
   };
+
+  const onSelectFinish = () => {
+    console.log(allConfigs[idxSelected]);
+    localStorage.setItem("vehConfig", JSON.stringify(allConfigs[idxSelected]));
+    navigate("compute");
   };
 
   return (
@@ -155,6 +160,10 @@ const Options = () => {
               <p>{cf.fuel}</p>
             </div>
           ))}
+
+          <button className="config-btn" onClick={onSelectFinish}>
+            DONE
+          </button>
         </>
       )}
     </section>

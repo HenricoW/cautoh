@@ -135,6 +135,10 @@ function App() {
     return dist;
   };
 
+  useEffect(() => {
+    const veh = localStorage.getItem("vehConfig");
+    if (veh) setCurrVehicle((prev) => JSON.parse(veh));
+  }, []);
   return (
     <div className="App">
       <div className="circle"></div>
