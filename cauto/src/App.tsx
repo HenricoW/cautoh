@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import "./App.css";
 import { LocationPoint } from "./utils/types";
+import Options, { ConfigData } from "./components/Options";
+import { Route, Routes } from "react-router-dom";
 import Compute from "./components/Compute";
 
 const intMS = 500;
@@ -19,6 +21,7 @@ function App() {
   const [showHist, setShowHist] = useState(false);
   const [speedData, setSpeedData] = useState<SpeedDataType[]>([]);
   const [distance, setDistance] = useState(0);
+  const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
 
   // const getLoc = () =>
   //   navigator.geolocation.getCurrentPosition(
@@ -137,12 +140,35 @@ function App() {
       <div className="circle"></div>
       <h2>Mobili-C</h2>
       <h4>Track your Carbon emissions from driving</h4>
-      <Options />
-      <Controlls listenLoc={listenLoc} stopListenLoc={stopListenLoc} />
-      <Distances distance={distance} />
-      {showHist && <Chart speedData={speedData} />}
 
-      <button onClick={onGetConfigs}>Get Model Configs</button>
+      {currVehicle && (
+        <>
+          <h3>Your vehicle</h3>
+          <div className="configs">
+            <h4>{currVehicle.modelConfig}</h4>
+            <p>{currVehicle.engineConfig}</p>
+            <p>{currVehicle.fuel}</p>
+          </div>
+        </>
+      )}
+
+      <Routes>
+        <Route path="/" element={<Options />} />
+        <Route
+          path="compute"
+          element={
+            <Compute
+              distance={distance}
+              listenLoc={listenLoc}
+              onGetConfigs={onGetConfigs}
+              setCurrVehicle={setCurrVehicle}
+              showHist={showHist}
+              speedData={speedData}
+              stopListenLoc={stopListenLoc}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }

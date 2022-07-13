@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Options.css";
 
-type ConfigData = {
+export type ConfigData = {
   modelConfig: string;
   engineConfig: string;
   fuel: string;
@@ -26,6 +27,8 @@ const Options = () => {
   const [model, setModel] = useState("");
   const [config, setConfig] = useState<ConfigData | {}>({});
   const [idxSelected, setIdxSelected] = useState(0);
+
+  const navigate = useNavigate();
 
   const fetchYears = useMemo(() => {
     console.log("Getting years");
@@ -99,12 +102,14 @@ const Options = () => {
 
   const onConfigUpdate = (index: number) => {
     console.log(index);
-    setIdxSelected(index);
-    setConfig(allConfigs[index]);
+    setIdxSelected((oldi) => index);
+    setConfig((oldConf) => allConfigs[index]);
+  };
   };
 
   return (
-    <div>
+    <section className="vehicle-selection">
+      <h3>What vehicle do you drive?</h3>
       <select name="years" id="years" onChange={(e) => onYearUpdate(e)}>
         <option value="">Year</option>
         {allYears.map((y) => (
@@ -152,7 +157,7 @@ const Options = () => {
           ))}
         </>
       )}
-    </div>
+    </section>
   );
 };
 

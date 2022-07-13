@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SpeedDataType } from "../App";
 import Chart from "./Chart";
 import Controlls from "./Controlls";
@@ -18,6 +19,8 @@ type ComputeProps = {
 const Compute = (props: ComputeProps) => {
   const { distance, listenLoc, onGetConfigs, showHist, speedData, stopListenLoc, setCurrVehicle } = props;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const veh = localStorage.getItem("vehConfig");
 
@@ -28,6 +31,9 @@ const Compute = (props: ComputeProps) => {
 
   return (
     <>
+      <button className="config-btn" onClick={() => navigate("/")}>
+        Go Back
+      </button>
       <Controlls listenLoc={listenLoc} stopListenLoc={stopListenLoc} />
       <Distances distance={distance} />
       {showHist && <Chart speedData={speedData} />}
