@@ -6,6 +6,7 @@ import { LocationPoint } from "./utils/types";
 import Distances from "./components/Distances";
 import Controlls from "./components/Controlls";
 import Chart from "./components/Chart";
+import Options from "./components/Options";
 
 const intMS = 500;
 export type SpeedDataType = {
@@ -139,6 +140,7 @@ function App() {
       <div className="circle"></div>
       <h2>Mobili-C</h2>
       <h4>Track your Carbon emissions from driving</h4>
+      <Options />
       <Controlls listenLoc={listenLoc} stopListenLoc={stopListenLoc} />
       <Distances distance={distance} />
       {showHist && <Chart speedData={speedData} />}
