@@ -8,16 +8,15 @@ type ControllsProps = {
 const Controlls = ({ listenLoc, stopListenLoc }: ControllsProps) => {
   return (
     <>
-      <div className="circle-btn" onClick={listenLoc}>
-        <h4>START</h4>
-      </div>
-
       <div className="stopgrp" style={{ display: "flex" }}>
+        <div className="circle-btn" onClick={listenLoc}>
+          <h4>START</h4>
+        </div>
         <div className="circle-btn" onClick={() => stopListenLoc(true)}>
-          <h4>STOP</h4>
+          <h4>STOP-TEST</h4>
         </div>
         <div className="circle-btn" onClick={() => stopListenLoc(false)}>
-          <h4>STOP-V</h4>
+          <h4>STOP-TRACK</h4>
         </div>
       </div>
     </>

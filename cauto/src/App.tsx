@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import React, { useState } from "react";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import "./App.css";
 import { LocationPoint } from "./utils/types";
 import Options, { ConfigData } from "./components/Options";
 import { Route, Routes } from "react-router-dom";
 import Compute from "./components/Compute";
 
-const intMS = 500;
+export const intMS = 500;
 export type SpeedDataType = {
   time: number;
   speed: number;
@@ -139,6 +137,7 @@ function App() {
     const veh = localStorage.getItem("vehConfig");
     if (veh) setCurrVehicle((prev) => JSON.parse(veh));
   }, []);
+
   return (
     <div className="App">
       <div className="circle"></div>
@@ -164,7 +163,7 @@ function App() {
             <Compute
               distance={distance}
               listenLoc={listenLoc}
-              onGetConfigs={onGetConfigs}
+              currVehicle={currVehicle}
               setCurrVehicle={setCurrVehicle}
               showHist={showHist}
               speedData={speedData}

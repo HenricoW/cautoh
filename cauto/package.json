@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fluencelabs/fluence": "^0.23.1",
+    "@fluencelabs/fluence-network-environment": "^1.0.13",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.5.0",
@@ -31,10 +33,14 @@
     "workbox-streams": "^6.4.2"
   },
   "scripts": {
+    "postinstall": "copy-marine public",
+    "prestart": "yarn compile-aqua",
+    "prebuild": "yarn compile-aqua",
     "start": "react-scripts start --port 3001",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "compile-aqua": "aqua -i ../aqua/ -o ./src/_aqua"
   },
   "eslintConfig": {
     "extends": [
@@ -53,5 +59,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@fluencelabs/aqua": "^0.7.4-330",
+    "@fluencelabs/aqua-lib": "^0.5.2",
+    "@fluencelabs/marine-js": "^0.3.1",
+    "ip-address": "^8.1.0"
   }
 }

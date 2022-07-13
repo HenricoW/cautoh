@@ -26,14 +26,23 @@ module_manifest!();
 pub fn main() {}
 
 #[marine]
-pub struct Result {
+pub struct ConfigResult {
     pub result: String,
     pub success: bool,
     pub error_msg: String,
 }
 
 #[marine]
-pub fn get_emission(year: u32, make: String, model: String) -> Result {
+pub struct EmissResult {
+    pub result: f32,
+    pub res_low: f32,
+    pub res_high: f32,
+    pub success: bool,
+    pub error_msg: String,
+}
+
+#[marine]
+pub fn get_configs(year: u32, make: String, model: String) -> ConfigResult {
     let url = "https://cauto-api.vercel.app/api/modelConfigs".to_string();
     let json_data = json!({ "year": year, "make": make, "model": model });
 
@@ -75,17 +84,54 @@ pub fn get_emission(year: u32, make: String, model: String) -> Result {
 
             // let value: f64 = value.unwrap();
 
-            Result {
+            ConfigResult {
                 result: res,
                 success: true,
                 error_msg: "".to_string(),
             }
         }
-        Err(_) => Result {
+        Err(_) => ConfigResult {
             result: "".to_string(),
             success: false,
             error_msg: String::from_utf8(response.stderr).unwrap(),
         },
+    }
+}
+
+#[marine]
+pub fn calc_emission(gpm: u32, speeds: Vec<f32>, interval: f32) -> EmissResult {
+    let mut count = 0;
+    let mut distance = 0.0;
+    
+    if speeds.len() == 0 {
+        EmissResult {
+            result: 0.0,
+            res_low: 0.0,
+            res_high: 0.0,
+            success: false,
+            error_msg: "No speed data".to_string(),
+        }
+    } else {
+        loop {
+            if count == 0 {
+                count += 1;
+                continue;
+            }
+            if count >= speeds.len() { break; }
+            
+            distance += interval * (speeds[count] + speeds[count - 1]) / 2.0;
+            count += 1;
+        }
+    
+        let emission = gpm as f32 * distance / 1609.0;
+    
+        EmissResult {
+            result: emission,
+            res_low: emission * 80.0 / 100.0,
+            res_high: emission * 120.0 / 100.0,
+            success: true,
+            error_msg: "".to_string(),
+        }
     }
 }
 
