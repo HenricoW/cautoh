@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import "./App.css";
 import { LocationPoint } from "./utils/types";
-import Distances from "./components/Distances";
-import Controlls from "./components/Controlls";
-import Chart from "./components/Chart";
-import Options from "./components/Options";
+import Compute from "./components/Compute";
 
 const intMS = 500;
 export type SpeedDataType = {
