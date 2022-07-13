@@ -60,6 +60,11 @@ const Compute = (props: ComputeProps) => {
       <button className="calc-btn" onClick={onGetEmission}>
         Calculate
       </button>
+
+      <div className="result">
+        <h2>{emissResult.toFixed(2)} grams of CO2</h2>
+        <p>Within 15% level of accuracy</p>
+      </div>
     </>
   );
 };
