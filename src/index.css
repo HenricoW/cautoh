@@ -11,3 +11,100 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+/* Layout */
+.app {
+  text-align: center;
+}
+
+.circle {
+  margin: 10px auto;
+  width: 50px;
+  height: 50px;
+  background-color: #1e90ff;
+  border-radius: 50%;
+}
+
+.recharts-wrapper {
+  position: relative;
+  cursor: default;
+  width: 350px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+.recharts-label {
+  transform: rotate(-90deg) translate(-170px, -90px);
+}
+
+/* Options */
+select {
+  font-size: 1.2em;
+  padding: 5px;
+  display: block;
+  margin: 0.7em auto;
+  min-width: 15em;
+  border-radius: 5px;
+  background-color: #3f3f3f;
+  color: inherit;
+}
+
+.configs {
+  border: solid #3f3f3f 3px;
+  border-radius: 10px;
+  max-width: 350px;
+  margin: 0.5em auto;
+}
+
+.configs:hover {
+  cursor: pointer;
+  border-color: #333ea0;
+}
+
+.selected {
+  border: solid #1e90ff 3px;
+  border-radius: 10px;
+  max-width: 350px;
+  margin: 0.5em auto;
+}
+
+.config-btn {
+  border: solid #1e90ff 3px;
+  border-radius: 10px;
+  background-color: unset;
+  font-size: 1.3em;
+  padding: 15px 30px;
+  margin: 1em 0;
+  color: #1e90ff;
+}
+
+.config-btn:hover {
+  background-color: #1e90ff;
+  color: black;
+  cursor: pointer;
+}
+
+/* Controlls */
+.ctrlgroup {
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  gap: 1em;
+}
+
+.circle-btn {
+  height: 6em;
+  width: 6em;
+  border: 3px solid #1e90ff;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-btn:hover {
+  cursor: pointer;
+  background-color: #1e90ff;
+  color: black;
+}

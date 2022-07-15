@@ -1,22 +1,11 @@
-import React, { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Options.css";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import CurrentVehicle from "../components/CurrentVehicle";
+import { baseURL, configsPt, makesPt, modelsPt, yearsPt } from "../utils/configs";
+import { ConfigData } from "../utils/types";
 
-export type ConfigData = {
-  modelConfig: string;
-  engineConfig: string;
-  fuel: string;
-  img: string;
-  co2pm: number;
-};
-
-const baseURL = "https://cauto-api.vercel.app/api/";
-const yearsPt = "years";
-const makesPt = "makes";
-const modelsPt = "models";
-const configsPt = "modelConfigs";
-
-const Options = () => {
+const Home: NextPage = () => {
   const [allYears, setAllYears] = useState<string[]>([]);
   const [allMakes, setAllMakes] = useState<string[]>([]);
   const [allModels, setAllModels] = useState<string[]>([]);
@@ -28,7 +17,8 @@ const Options = () => {
   const [config, setConfig] = useState<ConfigData | {}>({});
   const [idxSelected, setIdxSelected] = useState(0);
 
-  const navigate = useNavigate();
+  const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
+  const router = useRouter();
 
   const fetchYears = useMemo(() => {
     console.log("Getting years");
@@ -109,11 +99,17 @@ const Options = () => {
   const onSelectFinish = () => {
     console.log(allConfigs[idxSelected]);
     localStorage.setItem("vehConfig", JSON.stringify(allConfigs[idxSelected]));
-    navigate("compute");
+    router.push("compute");
   };
+
+  useEffect(() => {
+    const veh = localStorage.getItem("vehConfig");
+    if (veh) setCurrVehicle(JSON.parse(veh));
+  }, []);
 
   return (
     <section className="vehicle-selection">
+      <CurrentVehicle currVehicle={currVehicle} />
       <h3>What vehicle do you drive?</h3>
       <select name="years" id="years" onChange={(e) => onYearUpdate(e)}>
         <option value="">Year</option>
@@ -170,4 +166,5 @@ const Options = () => {
   );
 };
 
-export default React.memo(Options);
+// export default React.memo(Home);
+export default Home;

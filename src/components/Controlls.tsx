@@ -1,5 +1,4 @@
 import React from "react";
-import "./Controlls.css";
 
 type ControllsProps = {
   listenLoc: () => void;

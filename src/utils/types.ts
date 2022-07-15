@@ -5,3 +5,11 @@ export type LocationPoint = {
   speed: number | null;
   ts: number;
 };
+
+export type ConfigData = {
+  modelConfig: string;
+  engineConfig: string;
+  fuel: string;
+  img: string;
+  co2pm: number;
+};

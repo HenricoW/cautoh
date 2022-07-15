@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import { LocationPoint } from "./utils/types";
-import Options, { ConfigData } from "./components/Options";
-import { Route, Routes } from "react-router-dom";
-import Compute from "./components/Compute";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Chart from "../components/Chart";
+import Controlls from "../components/Controlls";
+import CurrentVehicle from "../components/CurrentVehicle";
+import Distances from "../components/Distances";
+import { ConfigData, LocationPoint } from "../utils/types";
 
 export const intMS = 500;
 export type SpeedDataType = {
@@ -11,7 +12,17 @@ export type SpeedDataType = {
   speed: number;
 };
 
-function App() {
+type ComputeProps = {
+  // currVehicle: ConfigData | null;
+  // setCurrVehicle: (value: React.SetStateAction<ConfigData | null>) => void;
+  // listenLoc: () => void;
+  // stopListenLoc: (isTesting: boolean) => void;
+  // distance: number;
+  // showHist: boolean;
+  // speedData: SpeedDataType[];
+};
+
+const Compute = (props: ComputeProps) => {
   const [isListening, setIsListening] = useState(false);
   const [locHist, setLocHist] = useState<LocationPoint[]>([]);
   const [dataCount, setDataCount] = useState(0);
@@ -19,26 +30,12 @@ function App() {
   const [showHist, setShowHist] = useState(false);
   const [speedData, setSpeedData] = useState<SpeedDataType[]>([]);
   const [distance, setDistance] = useState(0);
+  const [emissResult, setemissResult] = useState(0);
+
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
 
-  // const getLoc = () =>
-  //   navigator.geolocation.getCurrentPosition(
-  //     (loc) => {
-  //       let locPt = {
-  //         lat: loc.coords.latitude,
-  //         long: loc.coords.longitude,
-  //         acc: loc.coords.accuracy,
-  //         speed: loc.coords.speed,
-  //         ts: loc.timestamp,
-  //       };
-  //       console.log("lat long:", locPt.lat, locPt.long, dataCount);
-
-  //       setLocHist((hist) => [...hist, locPt]);
-  //       setDataCount((c) => ++c);
-  //     },
-  //     (err) => console.log(err),
-  //     { enableHighAccuracy: true }
-  //   );
+  // const { setCurrVehicle, currVehicle } = props;
+  const router = useRouter();
 
   const listenLoc = () => {
     setShowHist(false);
@@ -135,45 +132,39 @@ function App() {
 
   useEffect(() => {
     const veh = localStorage.getItem("vehConfig");
-    if (veh) setCurrVehicle((prev) => JSON.parse(veh));
+    if (veh) setCurrVehicle(JSON.parse(veh));
   }, []);
 
+  const onGetEmission = async () => {
+    if (!currVehicle) return;
+
+    const speeds = speedData.map((v) => v.speed);
+    // const result = await get_emissions(currVehicle.co2pm, speeds, intMS / 1000);
+    // console.log(result);
+    // setemissResult(result);
+    setemissResult(23.3);
+  };
+
   return (
-    <div className="App">
-      <div className="circle"></div>
-      <h2>Mobili-C</h2>
-      <h4>Track your Carbon emissions from driving</h4>
+    <>
+      <CurrentVehicle currVehicle={currVehicle} />
+      <button className="config-btn" onClick={() => router.push("/")}>
+        Go Back
+      </button>
+      <Controlls listenLoc={listenLoc} stopListenLoc={stopListenLoc} />
+      <Distances distance={distance} />
+      {showHist && <Chart speedData={speedData} />}
 
-      {currVehicle && (
-        <>
-          <h3>Your vehicle</h3>
-          <div className="configs">
-            <h4>{currVehicle.modelConfig}</h4>
-            <p>{currVehicle.engineConfig}</p>
-            <p>{currVehicle.fuel}</p>
-          </div>
-        </>
-      )}
+      <button className="calc-btn" onClick={onGetEmission}>
+        Calculate
+      </button>
 
-      <Routes>
-        <Route path="/" element={<Options />} />
-        <Route
-          path="compute"
-          element={
-            <Compute
-              distance={distance}
-              listenLoc={listenLoc}
-              currVehicle={currVehicle}
-              setCurrVehicle={setCurrVehicle}
-              showHist={showHist}
-              speedData={speedData}
-              stopListenLoc={stopListenLoc}
-            />
-          }
-        />
-      </Routes>
-    </div>
+      <div className="result">
+        <h2>{emissResult.toFixed(2)} grams of CO2</h2>
+        <p>Within 15% level of accuracy</p>
+      </div>
+    </>
   );
-}
+};
 
-export default App;
+export default Compute;
