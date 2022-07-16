@@ -13,3 +13,8 @@ export type ConfigData = {
   img: string;
   co2pm: number;
 };
+
+export type SpeedDataType = {
+  time: number;
+  speed: number;
+};

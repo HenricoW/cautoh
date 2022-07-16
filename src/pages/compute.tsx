@@ -4,23 +4,10 @@ import Chart from "../components/Chart";
 import Controlls from "../components/Controlls";
 import CurrentVehicle from "../components/CurrentVehicle";
 import Distances from "../components/Distances";
-import { ConfigData, LocationPoint } from "../utils/types";
+import { intMS } from "../utils/configs";
+import { ConfigData, LocationPoint, SpeedDataType } from "../utils/types";
 
-export const intMS = 500;
-export type SpeedDataType = {
-  time: number;
-  speed: number;
-};
-
-type ComputeProps = {
-  // currVehicle: ConfigData | null;
-  // setCurrVehicle: (value: React.SetStateAction<ConfigData | null>) => void;
-  // listenLoc: () => void;
-  // stopListenLoc: (isTesting: boolean) => void;
-  // distance: number;
-  // showHist: boolean;
-  // speedData: SpeedDataType[];
-};
+type ComputeProps = {};
 
 const Compute = (props: ComputeProps) => {
   const [isListening, setIsListening] = useState(false);
@@ -34,7 +21,6 @@ const Compute = (props: ComputeProps) => {
 
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
 
-  // const { setCurrVehicle, currVehicle } = props;
   const router = useRouter();
 
   const listenLoc = () => {
