@@ -3,3 +3,5 @@ export const yearsPt = "years";
 export const makesPt = "makes";
 export const modelsPt = "models";
 export const configsPt = "modelConfigs";
+
+export const viewFinderSize = "350px";

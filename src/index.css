@@ -108,3 +108,11 @@ select {
   background-color: #1e90ff;
   color: black;
 }
+
+.acc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  margin-top: 2em;
+}
