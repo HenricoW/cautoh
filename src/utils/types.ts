@@ -1,3 +1,5 @@
+import { HashConnectTypes } from "hashconnect";
+
 export type LocationPoint = {
   lat: number;
   long: number;
@@ -17,4 +19,12 @@ export type ConfigData = {
 export type SpeedDataType = {
   time: number;
   speed: number;
+};
+
+export type HCSaveData = {
+  topic: string;
+  pairingString: string;
+  privateKey?: string;
+  pairedWalletData?: HashConnectTypes.WalletMetadata;
+  pairedAccounts: string[];
 };
