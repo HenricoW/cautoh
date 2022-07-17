@@ -33,8 +33,12 @@ code {
   margin: 0 auto;
 }
 
-.recharts-label {
-  transform: rotate(-90deg) translate(-170px, -90px);
+.recharts-xAxis > .recharts-label {
+  transform: translate(0px, -20px);
+}
+
+.recharts-yAxis > .recharts-label {
+  transform: rotate(-90deg) translate(-190px, -90px);
 }
 
 /* Options */
@@ -84,12 +88,35 @@ select {
   cursor: pointer;
 }
 
+.config-btn:disabled {
+  border: solid #155391 3px;
+  border-radius: 10px;
+  background-color: unset;
+  font-size: 1.3em;
+  padding: 15px 30px;
+  margin: 1em 0;
+  color: #155391;
+  cursor: not-allowed;
+}
+
 /* Controlls */
 .ctrlgroup {
   width: fit-content;
-  margin: 0 auto;
+  margin: 2em auto;
   display: flex;
   gap: 1em;
+}
+
+.start-stop-btn {
+  font-size: 2em;
+  border: 3px solid #11c211;
+  border-radius: 10px;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.rec {
+  border-color: #ec461c;
 }
 
 .circle-btn {
@@ -126,4 +153,22 @@ select {
 
 #ext-link:hover {
   cursor: pointer;
+}
+
+.acc-id {
+  border: solid #3f3f3f 3px;
+  border-radius: 10px;
+  max-width: 350px;
+  margin: 0.5em auto;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.success-text {
+  font-size: 1.5em;
+  color: #11c211;
+  padding: 0.5em 1em;
+  border: solid #11c211 3px;
+  border-radius: 10px;
 }

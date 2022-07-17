@@ -28,11 +28,15 @@ function App({ Component, pageProps }: AppProps) {
         <h2>Mobili-C</h2>
         <h4>Track your Carbon emissions from driving</h4>
 
-        {userAcc && (
-          <>
-            <h4>Linked Account:</h4>
+        {userAcc ? (
+          <div className="acc-id">
+            <p>Linked Account:</p>
             <p>{userAcc}</p>
-          </>
+          </div>
+        ) : (
+          <button className="config-btn" onClick={() => router.push("/connect")}>
+            Connect Wallet
+          </button>
         )}
 
         <Component {...pageProps} />

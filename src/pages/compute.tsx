@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Chart from "../components/Chart";
-import Controlls from "../components/Controlls";
 import CurrentVehicle from "../components/CurrentVehicle";
-import Distances from "../components/Distances";
 import { getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import { ConfigData, LocationPoint, SpeedDataType } from "../utils/types";
 import { AppContext } from "./_app";
@@ -107,20 +105,28 @@ const Compute = () => {
       });
   };
 
+  const toggleRec = () => (isListening ? stopListenLoc(true) : listenLoc());
+
   return (
     <>
       <CurrentVehicle currVehicle={currVehicle} />
-      <Controlls listenLoc={listenLoc} stopListenLoc={stopListenLoc} />
-      <Distances distance={distance} />
+      <div className="ctrlgroup">
+        <div className={"start-stop-btn" + (isListening ? " rec" : "")} onClick={toggleRec}>
+          {isListening ? "Pause" : "Start"}
+        </div>
+      </div>
+      <h3>
+        Distance: {(distance / 1000).toFixed(3)} km / {(distance / 1609).toFixed(3)} mi
+      </h3>
       {showHist && <Chart speedData={speedData} />}
 
-      <button className={"config-btn" + (userAcc ? "" : " disabled")} disabled={!userAcc} onClick={onGetEmission}>
+      <button className={"config-btn"} disabled={!userAcc || isListening} onClick={onGetEmission}>
         {userAcc ? "Calculate" : "Connect to Calculate"}
       </button>
 
       <div className="result">
-        <h2>{emissResult.toFixed(2)} grams of CO2</h2>
         <p>{respMssg}</p>
+        <h2>{emissResult.toFixed(2)} grams of CO2</h2>
       </div>
     </>
   );

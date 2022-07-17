@@ -15,7 +15,6 @@ const Home: NextPage = () => {
   const [year, setYear] = useState(0);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
-  const [config, setConfig] = useState<ConfigData | {}>({});
   const [idxSelected, setIdxSelected] = useState(0);
 
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
@@ -96,7 +95,6 @@ const Home: NextPage = () => {
   const onConfigUpdate = (index: number) => {
     console.log(index);
     setIdxSelected((oldi) => index);
-    setConfig((oldConf) => allConfigs[index]);
   };
 
   const onSelectFinish = () => {
@@ -112,17 +110,10 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {/* {userAcc && ( */}
       <button className="config-btn" onClick={() => router.push("/linkAccount")}>
         Link with Mobile
       </button>
-      {/* )} */}
 
-      {!userAcc && (
-        <button className="config-btn" onClick={() => router.push("/connect")}>
-          Connect Wallet
-        </button>
-      )}
       <section className="vehicle-selection">
         <CurrentVehicle currVehicle={currVehicle} />
         <h3>What vehicle do you drive?</h3>
@@ -178,6 +169,12 @@ const Home: NextPage = () => {
           </>
         )}
       </section>
+
+      {!model && (
+        <button className="config-btn" onClick={() => router.push("compute")}>
+          Track Emissions Now
+        </button>
+      )}
     </>
   );
 };

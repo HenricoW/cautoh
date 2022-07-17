@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "./_app";
 import { HashConnector } from "../utils/hashpack";
 import { shortenStr } from "../utils/helpers";
-import { useRouter } from "next/router";
 
 const hashConnector = new HashConnector();
 type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
@@ -12,7 +11,6 @@ const Connect = () => {
   const [copyStatus, setCopyStatus] = useState<CopyMssg>("Copy Pair String");
 
   const { userAcc, setUserAcc } = useContext(AppContext);
-  const router = useRouter();
 
   useEffect(() => {
     hashConnector
@@ -76,9 +74,7 @@ const Connect = () => {
       )}
 
       {userAcc ? (
-        <button className="config-btn" onClick={() => router.back()}>
-          Go back
-        </button>
+        <div className="success-text">Connected!</div>
       ) : (
         <button className="config-btn" onClick={connectWallet}>
           Connect with HashPack
