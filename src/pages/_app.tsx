@@ -20,9 +20,6 @@ function App({ Component, pageProps }: AppProps) {
   const [userAcc, setUserAcc] = useState("");
 
   const router = useRouter();
-  const onLink = () => {
-    router.push("/linkAccount");
-  };
 
   return (
     <div className="app">
@@ -37,10 +34,6 @@ function App({ Component, pageProps }: AppProps) {
             <p>{userAcc}</p>
           </>
         )}
-
-        <button className="config-btn" onClick={onLink}>
-          Link Account
-        </button>
 
         <Component {...pageProps} />
       </AppContext.Provider>

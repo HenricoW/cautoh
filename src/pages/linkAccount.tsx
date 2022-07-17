@@ -34,10 +34,10 @@ const LinkAccount = () => {
     );
     scanRef.current = qrScanner;
 
-    if (userAcc)
-      QRCode.toCanvas(canv, userAcc)
-        .then(() => showCode())
-        .catch((err) => console.log(err));
+    console.log("connected account:", userAcc);
+    if (userAcc) {
+      QRCode.toCanvas(canv, userAcc).catch((err) => console.log(err));
+    }
   }, []);
 
   const showCode = () => {
@@ -62,15 +62,17 @@ const LinkAccount = () => {
 
   return (
     <div className="acc-page">
-      <canvas id="canvas" style={{ display: canvasVisible && !camOpen && isConnected ? "block" : "none" }}></canvas>
+      <canvas id="canvas" style={{ display: canvasVisible && !camOpen && userAcc ? "block" : "none" }}></canvas>
       <video id="viewfinder" width={viewFinderSize} height={camOpen ? viewFinderSize : "0px"} ref={vidRef}></video>
 
-      {canvasVisible && !isConnected && !camOpen && (
+      {canvasVisible && !userAcc && !camOpen && (
         <>
           <h2>Please connect with your HashPack wallet</h2>
-          <Link href="https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk">
-            Install on Chrome or Brave
-          </Link>
+          <div id="ext-link">
+            <Link href="https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk">
+              Install on Chrome or Brave
+            </Link>
+          </div>
         </>
       )}
 
