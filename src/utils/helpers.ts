@@ -39,3 +39,19 @@ export const getDist = (sData: SpeedDataType[]) => {
 
   return dist;
 };
+
+export const getBals = async (userAcc: string) => {
+  return fetch("api/getBalances", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ accId: userAcc }),
+  })
+    .then((resp) => resp.json())
+    .then((balInfo) => {
+      return { hbar: balInfo.bal.hbarBalance as string, token: +balInfo.bal.balance / 1000 };
+    })
+    .catch((err) => {
+      console.log(err);
+      return { hbar: "", token: 0 };
+    });
+};

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import CurrentVehicle from "../components/CurrentVehicle";
-import { getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
+import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import { ConfigData, LocationPoint, SpeedDataType } from "../utils/types";
 import { AppContext } from "./_app";
 
@@ -16,7 +16,7 @@ const Compute = () => {
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
   const [respMssg, setRespMssg] = useState("");
 
-  const { userAcc } = useContext(AppContext);
+  const { userAcc, setHbarBal, setTokenBal } = useContext(AppContext);
 
   const listenLoc = () => {
     setShowHist(false);
@@ -103,6 +103,28 @@ const Compute = () => {
         setRespMssg("Error saving data");
         console.log(err);
       });
+
+    fetch("api/mintCOOtkn", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: emm }),
+    })
+      .then((resp) => resp.json())
+      .then((rdata) => {
+        console.log("post mint", rdata);
+        return updateBals();
+      })
+      .then((tkbal) => console.log(tkbal))
+      .catch((err) => console.log(err));
+  };
+
+  const updateBals = async () => {
+    const { hbar, token } = await getBals(userAcc);
+    console.log(hbar, token);
+    setHbarBal(hbar);
+    setTokenBal(token);
+
+    return token;
   };
 
   const toggleRec = () => (isListening ? stopListenLoc(true) : listenLoc());

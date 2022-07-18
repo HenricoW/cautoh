@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "./_app";
 import { HashConnector } from "../utils/hashpack";
-import { shortenStr } from "../utils/helpers";
+import { getBals, shortenStr } from "../utils/helpers";
+import type { HashConnectProvider } from "hashconnect/dist/provider/provider";
 
 const hashConnector = new HashConnector();
 type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
@@ -9,15 +10,19 @@ type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
 const Connect = () => {
   const [pairStr, setPairStr] = useState("");
   const [copyStatus, setCopyStatus] = useState<CopyMssg>("Copy Pair String");
+  const [prov, setProv] = useState<HashConnectProvider>();
 
-  const { userAcc, setUserAcc } = useContext(AppContext);
+  const { userAcc, setUserAcc, setHPsigner, setHbarBal, setTokenBal, setIsMobileLink } = useContext(AppContext);
 
   useEffect(() => {
     hashConnector
       .initHashconnect()
       .then(() => {
         if (hashConnector.status !== "Paired") awaitPairing();
-        else setUserAcc(hashConnector.saveData.pairedAccounts[0]);
+        else {
+          setUserAcc(hashConnector.saveData.pairedAccounts[0]);
+          getSigner();
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -38,8 +43,30 @@ const Connect = () => {
       });
 
       hashConnector.saveDataInLocalstorage();
+      getSigner();
       setUserAcc(data.accountIds[0]);
+      setIsMobileLink(false);
     });
+  };
+
+  const getSigner = async () => {
+    const provider = hashConnector.hashconnect.getProvider(
+      "testnet",
+      hashConnector.saveData.topic,
+      hashConnector.saveData.pairedAccounts[0]
+    );
+    const signer = hashConnector.hashconnect.getSigner(provider);
+
+    setProv(provider);
+    setHPsigner(signer);
+
+    await updateBals();
+  };
+
+  const updateBals = async () => {
+    const { hbar, token } = await getBals(userAcc);
+    setHbarBal(hbar);
+    setTokenBal(token);
   };
 
   const copyText = (text: string) => {
