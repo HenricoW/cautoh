@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hashgraph/sdk": "^2.16.6",
     "dotenv": "^16.0.1",
     "hashconnect": "^0.1.9",
     "next": "^12.2.2",

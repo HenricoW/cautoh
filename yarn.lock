@@ -1243,7 +1243,7 @@
     long "^4.0.0"
     protobufjs "^6.11.2"
 
-"@hashgraph/sdk@^2.14.2":
+"@hashgraph/sdk@^2.14.2", "@hashgraph/sdk@^2.16.6":
   version "2.16.6"
   resolved "https://registry.yarnpkg.com/@hashgraph/sdk/-/sdk-2.16.6.tgz#379e4ef540a03bab5decf328dd4475b7d93adf1f"
   integrity sha512-cfIGOTf9cReP3l+w3P/cinnlmlGTyCt5TdmNpeWXJc5zrWimK2TJra6WDcfC8hzMFKOV0qI2Ka1YJk54hR8Yfg==
