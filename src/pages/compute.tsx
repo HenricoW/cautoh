@@ -107,7 +107,7 @@ const Compute = () => {
     fetch("api/mintCOOtkn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: emm }),
+      body: JSON.stringify({ amount: emm, receiver: userAcc }),
     })
       .then((resp) => resp.json())
       .then((rdata) => {

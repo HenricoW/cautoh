@@ -8,9 +8,10 @@ const {
   TokenMintTransaction,
   Hbar,
   Status,
+  TransferTransaction,
 } = require("@hashgraph/sdk");
 
-export let tokenID = "0.0.47698222";
+export let tokenID = "0.0.47698769";
 let theToken;
 
 export async function tokenGetInfo(token) {
@@ -164,14 +165,13 @@ export async function tokenCreate(token) {
   }
 }
 
-async function tokenAssociationTransaction(transaction, tokenId) {
+async function tokenAssociationTransaction(transaction, tokenId, accountID) {
   const client = hederaClient();
-
   const userKey = PrivateKey.fromString(process.env.OP_SK);
 
   try {
     transaction.setTokenIds([tokenId]);
-    transaction.setAccountId(process.env.OP_ID);
+    transaction.setAccountId(accountID);
 
     await transaction.signWithOperator(client);
     await transaction.sign(userKey);
@@ -180,9 +180,7 @@ async function tokenAssociationTransaction(transaction, tokenId) {
 
     const transactionReceipt = await response.getReceipt(client);
     if (transactionReceipt.status !== Status.Success) {
-      return {
-        status: false,
-      };
+      return { status: false };
     }
 
     return {
@@ -190,15 +188,13 @@ async function tokenAssociationTransaction(transaction, tokenId) {
       transactionId: response.transactionId.toString(),
     };
   } catch (err) {
-    return {
-      status: false,
-    };
+    return { status: false };
   }
 }
 
-export async function tokenAssociate(tokenId) {
+export async function tokenAssociate(tokenId, accountID = "") {
   const tx = await new TokenAssociateTransaction();
-  const result = await tokenAssociationTransaction(tx, tokenId);
+  const result = await tokenAssociationTransaction(tx, tokenId, accountID || process.env.OP_ID);
 
   return result.status;
 }
@@ -282,6 +278,44 @@ export async function tokenMint(instruction) {
   const result = await tokenTransactionWithAmount(client, tx, instruction, supplyKey);
 
   return result.status;
+}
+
+export async function tokenTransfer(tokenId, quantity, hbar, receiverId) {
+  const client = hederaClient();
+
+  try {
+    const tx = await new TransferTransaction();
+    tx.addTokenTransfer(tokenId, process.env.OP_ID, -quantity);
+    tx.addTokenTransfer(tokenId, receiverId, quantity);
+    if (hbar !== 0) {
+      // // token recipient pays in hBar and signs transaction
+      // tx.addHbarTransfer(receiverId, new Hbar(-hbar));
+      // tx.addHbarTransfer(process.env.OP_ID, new Hbar(hbar));
+      // tx.freezeWith(client);
+      // const sigKey = await PrivateKey.fromString(process.env.OP_SK);
+      // await tx.sign(sigKey);
+    }
+
+    const result = await tx.execute(client);
+    const transactionReceipt = await result.getReceipt(client);
+
+    if (transactionReceipt.status !== Status.Success) {
+      console.log(transactionReceipt.status.toString());
+      return false;
+    } else {
+      console.log("tokens transfer successful");
+      const transaction = {
+        id: result.transactionId.toString(),
+        type: "tokenTransfer",
+        inputs: "tokenId=" + tokenId + ", from=" + process.env.OP_ID + ", to=" + receiverId + ", amount=" + quantity,
+      };
+      console.log("addTransaction", transaction);
+      return true;
+    }
+  } catch (err) {
+    console.log(err.message);
+    return false;
+  }
 }
 
 export async function tokenGrantKYC(instruction) {
