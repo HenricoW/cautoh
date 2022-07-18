@@ -11,7 +11,7 @@ const LinkAccount = () => {
   const [scanText, setScanText] = useState("Looking for Code...");
   const [isConnected, setIsConnected] = useState(false);
 
-  const { userAcc, setUserAcc } = useContext(AppContext);
+  const { userAcc, setUserAcc, setIsMobileLink } = useContext(AppContext);
 
   const vidRef = useRef<HTMLVideoElement>(null);
   const scanRef = useRef<QrScanner>();
@@ -25,6 +25,7 @@ const LinkAccount = () => {
       (result) => {
         console.log("decoded qr code:", result.data);
         setUserAcc(result.data);
+        setIsMobileLink(true);
         onScanSuccess();
       },
       {

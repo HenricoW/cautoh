@@ -99,6 +99,22 @@ select {
   cursor: not-allowed;
 }
 
+.wallet-btn {
+  border: solid #1e90ff 3px;
+  border-radius: 10px;
+  background-color: unset;
+  font-size: 1.3em;
+  padding: 15px 30px;
+  margin: 1em 0.5em;
+  color: #1e90ff;
+}
+
+.wallet-btn:hover {
+  background-color: #1e90ff;
+  color: black;
+  cursor: pointer;
+}
+
 /* Controlls */
 .ctrlgroup {
   width: fit-content;
@@ -155,14 +171,36 @@ select {
   cursor: pointer;
 }
 
-.acc-id {
+.acc-summary {
   border: solid #3f3f3f 3px;
   border-radius: 10px;
   max-width: 350px;
   margin: 0.5em auto;
+  padding: 0.75em 0;
+}
+
+.acc-id,
+.acc-balance,
+.cag-balance {
   display: flex;
   justify-content: center;
   gap: 1em;
+}
+
+.cag-balance {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.acc-id > p,
+.acc-balance > p,
+.cag-balance > p {
+  margin: 0.3em 0;
+}
+
+.acc-id {
+  font-weight: bold;
+  color: #62abf5;
 }
 
 .success-text {

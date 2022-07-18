@@ -110,7 +110,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <button className="config-btn" onClick={() => router.push("/linkAccount")}>
+      <button className="wallet-btn" onClick={() => router.push("/linkAccount")}>
         Link with Mobile
       </button>
 
