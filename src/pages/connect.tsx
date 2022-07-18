@@ -11,6 +11,7 @@ const Connect = () => {
   const [pairStr, setPairStr] = useState("");
   const [copyStatus, setCopyStatus] = useState<CopyMssg>("Copy Pair String");
   const [prov, setProv] = useState<HashConnectProvider>();
+  const [pairShowing, setPairShowing] = useState(false);
 
   const { userAcc, setUserAcc, setHPsigner, setHbarBal, setTokenBal, setIsMobileLink } = useContext(AppContext);
 
@@ -29,6 +30,7 @@ const Connect = () => {
 
   const connectWallet = () => {
     setPairStr(hashConnector.saveData.pairingString);
+    setPairShowing(true);
   };
 
   const awaitPairing = () => {
@@ -64,7 +66,8 @@ const Connect = () => {
   };
 
   const updateBals = async () => {
-    const { hbar, token } = await getBals(userAcc);
+    console.log("connect - updBals:", hashConnector.saveData.pairedAccounts[0]);
+    const { hbar, token } = await getBals(hashConnector.saveData.pairedAccounts[0]);
     setHbarBal(hbar);
     setTokenBal(token);
   };
@@ -81,7 +84,7 @@ const Connect = () => {
 
   return (
     <div className="acc-page">
-      {pairStr && (
+      {pairStr && !userAcc && (
         <>
           <ol>
             <li>Copy this pairing string</li>
@@ -93,7 +96,7 @@ const Connect = () => {
             <li>Select an account</li>
             <li>Hit "Approve"</li>
           </ol>
-          <h3>{shortenStr(pairStr, 20)}</h3>
+          <h2>{shortenStr(pairStr, 30)}</h2>
           <button className="config-btn" onClick={() => copyText(pairStr)}>
             {copyStatus}
           </button>
@@ -103,9 +106,11 @@ const Connect = () => {
       {userAcc ? (
         <div className="success-text">Connected!</div>
       ) : (
-        <button className="config-btn" onClick={connectWallet}>
-          Connect with HashPack
-        </button>
+        !pairShowing && (
+          <button className="config-btn" onClick={connectWallet}>
+            Connect with HashPack
+          </button>
+        )
       )}
     </div>
   );

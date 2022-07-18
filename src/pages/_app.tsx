@@ -56,7 +56,7 @@ function App({ Component, pageProps }: AppProps) {
         }}
       >
         <div className="circle"></div>
-        <h2>Mobili-C</h2>
+        <h2>C-Auto</h2>
         <h4>Track your Carbon emissions from driving</h4>
 
         {userAcc ? (
