@@ -5,7 +5,7 @@ import { getBals, shortenStr } from "../utils/helpers";
 import type { HashConnectProvider } from "hashconnect/dist/provider/provider";
 
 const hashConnector = new HashConnector();
-type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
+export type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
 
 const Connect = () => {
   const [pairStr, setPairStr] = useState("");

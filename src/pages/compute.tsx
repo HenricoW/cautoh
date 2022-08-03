@@ -127,7 +127,7 @@ const Compute = () => {
     return token;
   };
 
-  const toggleRec = () => (isListening ? stopListenLoc(true) : listenLoc());
+  const toggleRec = () => (isListening ? stopListenLoc(false) : listenLoc());
 
   return (
     <>

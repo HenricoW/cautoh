@@ -4,6 +4,7 @@ import { createContext, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import "../index.css";
 import type { HashConnectSigner } from "hashconnect/dist/provider/signer";
+import { tokenID } from "../utils/hedera/tokenService";
 
 interface ContextType {
   userAcc: string;
@@ -30,6 +31,7 @@ const initContext: ContextType = {
 };
 
 export const AppContext = createContext<ContextType>(initContext);
+export type CopyMssg = "Click to copy" | "Copied!" | "Please try again";
 
 function App({ Component, pageProps }: AppProps) {
   const [userAcc, setUserAcc] = useState("");
@@ -37,8 +39,19 @@ function App({ Component, pageProps }: AppProps) {
   const [hbarBal, setHbarBal] = useState("");
   const [tokenBal, setTokenBal] = useState(0);
   const [isMobileLink, setIsMobileLink] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<CopyMssg>("Click to copy");
 
   const router = useRouter();
+
+  const copyText = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => setCopyStatus("Copied!"))
+      .catch((err) => {
+        console.log(err);
+        setCopyStatus("Please try again");
+      });
+  };
 
   return (
     <div className="app">
@@ -70,6 +83,11 @@ function App({ Component, pageProps }: AppProps) {
                 <div className="cag-balance">
                   <p>CAG balance:</p>
                   <p>{tokenBal.toString()}</p>
+                </div>
+                <div className="acc-balance" onClick={() => copyText("0.0.47698769")}>
+                  <p>tokenID:</p>
+                  <p>{"0.0.47698769"}</p>
+                  <p>{copyStatus}</p>
                 </div>
                 <div className="acc-balance">
                   <p>hbar balance:</p>
