@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
+
+import type { HashConnectProvider } from "hashconnect/dist/provider/provider";
+
 import BaseBtn from "../components/Buttons/BaseBtn";
+
 import { AppContext } from "./_app";
 import { HashConnector } from "../utils/hashpack";
 import { getBals, shortenStr } from "../utils/helpers";
-import type { HashConnectProvider } from "hashconnect/dist/provider/provider";
 
 const hashConnector = new HashConnector();
 export type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";

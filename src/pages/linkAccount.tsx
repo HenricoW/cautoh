@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import Link from "next/link";
+
 import QRCode from "qrcode";
 import QrScanner from "qr-scanner";
+
 import BaseBtn from "../components/Buttons/BaseBtn";
-import { viewFinderSize } from "../utils/configs";
+
 import { AppContext } from "./_app";
-import Link from "next/link";
+import { viewFinderSize } from "../utils/configs";
 
 const LinkAccount = () => {
   const [canvasVisible, setCanvasVisible] = useState(false);
   const [camOpen, setCamOpen] = useState(false);
   const [scanText, setScanText] = useState("Looking for Code...");
-  const [isConnected, setIsConnected] = useState(false);
 
   const { userAcc, setUserAcc, setIsMobileLink } = useContext(AppContext);
 

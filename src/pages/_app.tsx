@@ -1,10 +1,12 @@
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
 import { createContext, useState } from "react";
 import type { SetStateAction } from "react";
-import "../index.css";
+
 import type { HashConnectSigner } from "hashconnect/dist/provider/signer";
+
 import RouteBtn from "../components/Buttons/RouteBtn";
+
+import "../index.css";
 import type { AppContextType } from "../types";
 
 const initContext: AppContextType = {

@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import Chart from "../components/Chart";
+
 import CurrentVehicle from "../components/CurrentVehicle";
+import Chart from "../components/Chart";
 import BaseBtn from "../components/Buttons/BaseBtn";
+
+import { AppContext } from "./_app";
 import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import type { ConfigData, LocationPoint, SpeedDataType } from "../types";
-import { AppContext } from "./_app";
 
 const Compute = () => {
   const [isListening, setIsListening] = useState(false);

@@ -1,5 +1,7 @@
 import React from "react";
+
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+
 import type { SpeedDataType } from "../types";
 
 type ChartProps = {

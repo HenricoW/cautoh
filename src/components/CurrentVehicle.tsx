@@ -1,4 +1,5 @@
 import React from "react";
+
 import type { ConfigData } from "../types";
 
 interface CurrentVehicleProps {
