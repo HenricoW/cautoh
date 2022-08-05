@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useMemo, useState } from "react";
 import CurrentVehicle from "../components/CurrentVehicle";
 import { baseURL, configsPt, makesPt, modelsPt, yearsPt } from "../utils/configs";
-import { ConfigData } from "../utils/types";
+import type { ConfigData } from "../types";
 import { AppContext } from "./_app";
 
 const Home: NextPage = () => {

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import CurrentVehicle from "../components/CurrentVehicle";
 import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
-import { ConfigData, LocationPoint, SpeedDataType } from "../utils/types";
+import type { ConfigData, LocationPoint, SpeedDataType } from "../types";
 import { AppContext } from "./_app";
 
 const Compute = () => {

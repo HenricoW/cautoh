@@ -1,24 +1,12 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { createContext, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+import type { SetStateAction } from "react";
 import "../index.css";
 import type { HashConnectSigner } from "hashconnect/dist/provider/signer";
-import { tokenID } from "../utils/hedera/tokenService";
+import type { AppContextType } from "../types";
 
-interface ContextType {
-  userAcc: string;
-  setUserAcc: Dispatch<SetStateAction<string>>;
-  HPsigner: HashConnectSigner | undefined;
-  setHPsigner: Dispatch<SetStateAction<HashConnectSigner | undefined>>;
-  hbarBal: string;
-  setHbarBal: Dispatch<SetStateAction<string>>;
-  tokenBal: number;
-  setTokenBal: Dispatch<SetStateAction<number>>;
-  setIsMobileLink: Dispatch<SetStateAction<boolean>>;
-}
-
-const initContext: ContextType = {
+const initContext: AppContextType = {
   userAcc: "",
   setUserAcc: (acc: SetStateAction<string>) => {},
   HPsigner: undefined,
@@ -30,7 +18,7 @@ const initContext: ContextType = {
   setIsMobileLink: (isLinked: SetStateAction<boolean>) => {},
 };
 
-export const AppContext = createContext<ContextType>(initContext);
+export const AppContext = createContext<AppContextType>(initContext);
 export type CopyMssg = "Click to copy" | "Copied!" | "Please try again";
 
 function App({ Component, pageProps }: AppProps) {

@@ -1,4 +1,4 @@
-import { LocationPoint, SpeedDataType } from "./types";
+import type { LocationPoint, SpeedDataType } from "../types";
 
 export const shortenStr = (str: string, charCount: number) => {
   if (str.length <= charCount) return;
