@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import CurrentVehicle from "../components/CurrentVehicle";
-import { baseURL, configsPt, makesPt, modelsPt, yearsPt } from "../utils/configs";
+import RenderVehicleOptions from "../components/RenderVehicleOptions";
 import type { ConfigData } from "../types";
 import { getConfigs, getMakes, getModels, getYears } from "../utils/vehicle";
 
@@ -54,37 +54,13 @@ const Home: NextPage = () => {
 
       <section className="vehicle-selection">
         <CurrentVehicle currVehicle={currVehicle} />
+
         <h3>What vehicle do you drive?</h3>
-        <select name="years" id="years" onChange={(e) => onYearUpdate(e)}>
-          <option value="">Year</option>
-          {allYears.map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+        <RenderVehicleOptions name="Year" arrayData={allYears} setterNum={setYear} />
 
-        {allMakes.length > 1 && (
-          <select name="makes" id="makes" onChange={(e) => onMakeUpdate(e)}>
-            <option value="">Make</option>
-            {allMakes.map((mk) => (
-              <option key={mk} value={mk}>
-                {mk}
-              </option>
-            ))}
-          </select>
-        )}
+        {allMakes.length > 1 && <RenderVehicleOptions name="Make" arrayData={allMakes} setterStr={setMake} />}
 
-        {allModels.length > 1 && (
-          <select name="models" id="models" onChange={(e) => onModelUpdate(e)}>
-            <option value="">Model</option>
-            {allModels.map((md) => (
-              <option key={md} value={md}>
-                {md}
-              </option>
-            ))}
-          </select>
-        )}
+        {allModels.length > 1 && <RenderVehicleOptions name="Model" arrayData={allModels} setterStr={setModel} />}
 
         {allConfigs.length > 1 && (
           <>
