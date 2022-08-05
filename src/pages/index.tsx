@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import BaseBtn from "../components/Buttons/BaseBtn";
+import RouteBtn from "../components/Buttons/RouteBtn";
 import CurrentVehicle from "../components/CurrentVehicle";
 import RenderVehicleOptions from "../components/RenderVehicleOptions";
 import type { ConfigData } from "../types";
@@ -48,9 +50,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   return (
     <>
-      <button className="wallet-btn" onClick={() => router.push("/linkAccount")}>
-        Link with Mobile
-      </button>
+      <RouteBtn text="Link with Mobile" route="linkAccount" />
 
       <section className="vehicle-selection">
         <CurrentVehicle currVehicle={currVehicle} />
@@ -77,18 +77,12 @@ const Home: NextPage = () => {
               </div>
             ))}
 
-            <button className="config-btn" onClick={onSelectFinish}>
-              DONE
-            </button>
+            <BaseBtn onClick={onSelectFinish}>DONE</BaseBtn>
           </>
         )}
       </section>
 
-      {!model && (
-        <button className="config-btn" onClick={() => router.push("compute")}>
-          Track Emissions Now
-        </button>
-      )}
+      {!model && <RouteBtn text="Track Emissions Now" route="compute" />}
     </>
   );
 };

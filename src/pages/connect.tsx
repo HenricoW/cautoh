@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import BaseBtn from "../components/Buttons/BaseBtn";
 import { AppContext } from "./_app";
 import { HashConnector } from "../utils/hashpack";
 import { getBals, shortenStr } from "../utils/helpers";
@@ -97,20 +98,14 @@ const Connect = () => {
             <li>Hit "Approve"</li>
           </ol>
           <h2>{shortenStr(pairStr, 30)}</h2>
-          <button className="config-btn" onClick={() => copyText(pairStr)}>
-            {copyStatus}
-          </button>
+          <BaseBtn onClick={() => copyText(pairStr)}>{copyStatus}</BaseBtn>
         </>
       )}
 
       {userAcc ? (
         <div className="success-text">Connected!</div>
       ) : (
-        !pairShowing && (
-          <button className="config-btn" onClick={connectWallet}>
-            Connect with HashPack
-          </button>
-        )
+        !pairShowing && <BaseBtn onClick={connectWallet}>Connect with HashPack</BaseBtn>
       )}
     </div>
   );

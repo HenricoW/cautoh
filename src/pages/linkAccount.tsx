@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import QRCode from "qrcode";
 import QrScanner from "qr-scanner";
+import BaseBtn from "../components/Buttons/BaseBtn";
 import { viewFinderSize } from "../utils/configs";
 import { AppContext } from "./_app";
 import Link from "next/link";
@@ -77,23 +78,15 @@ const LinkAccount = () => {
         </>
       )}
 
-      {!camOpen && (
-        <button className="config-btn" onClick={showCode}>
-          On Computer: Show Code
-        </button>
-      )}
+      {!camOpen && <BaseBtn onClick={showCode}>On Computer: Show Code</BaseBtn>}
 
       {camOpen ? (
         <>
           <h4>{scanText}</h4>
-          <button className="config-btn" onClick={closeScanner}>
-            Close Scanner
-          </button>
+          <BaseBtn onClick={closeScanner}>Close Scanner</BaseBtn>
         </>
       ) : (
-        <button className="config-btn" onClick={showScanner}>
-          On Mobile: Scan Code
-        </button>
+        <BaseBtn onClick={showScanner}>On Mobile: Scan Code</BaseBtn>
       )}
     </div>
   );

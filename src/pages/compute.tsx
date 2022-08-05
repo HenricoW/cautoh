@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Chart from "../components/Chart";
 import CurrentVehicle from "../components/CurrentVehicle";
+import BaseBtn from "../components/Buttons/BaseBtn";
 import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import type { ConfigData, LocationPoint, SpeedDataType } from "../types";
 import { AppContext } from "./_app";
@@ -142,9 +143,9 @@ const Compute = () => {
       </h3>
       {showHist && <Chart speedData={speedData} />}
 
-      <button className={"config-btn"} disabled={!userAcc || isListening} onClick={onGetEmission}>
+      <BaseBtn disabled={!userAcc || isListening} onClick={onGetEmission}>
         {userAcc ? "Calculate" : "Connect to Calculate"}
-      </button>
+      </BaseBtn>
 
       <div className="result">
         <p>{respMssg}</p>

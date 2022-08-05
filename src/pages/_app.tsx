@@ -4,6 +4,7 @@ import { createContext, useState } from "react";
 import type { SetStateAction } from "react";
 import "../index.css";
 import type { HashConnectSigner } from "hashconnect/dist/provider/signer";
+import RouteBtn from "../components/Buttons/RouteBtn";
 import type { AppContextType } from "../types";
 
 const initContext: AppContextType = {
@@ -28,8 +29,6 @@ function App({ Component, pageProps }: AppProps) {
   const [tokenBal, setTokenBal] = useState(0);
   const [isMobileLink, setIsMobileLink] = useState(false);
   const [copyStatus, setCopyStatus] = useState<CopyMssg>("Click to copy");
-
-  const router = useRouter();
 
   const copyText = (text: string) => {
     navigator.clipboard
@@ -85,9 +84,7 @@ function App({ Component, pageProps }: AppProps) {
             )}
           </div>
         ) : (
-          <button className="wallet-btn" onClick={() => router.push("/connect")}>
-            Connect Wallet
-          </button>
+          <RouteBtn text="Connect Wallet" route="connect" />
         )}
 
         <Component {...pageProps} />
