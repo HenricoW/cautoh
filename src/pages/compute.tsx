@@ -4,7 +4,7 @@ import CurrentVehicle from "../components/CurrentVehicle";
 import Chart from "../components/Chart";
 import BaseBtn from "../components/Buttons/BaseBtn";
 
-import { AppContext } from "./_app";
+import { AppCxt } from "../contexts/AppContext";
 import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import type { ConfigData, LocationPoint, SpeedDataType } from "../types";
 
@@ -19,7 +19,7 @@ const Compute = () => {
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
   const [respMssg, setRespMssg] = useState("");
 
-  const { userAcc, setHbarBal, setTokenBal } = useContext(AppContext);
+  const { userData, setUserData } = useContext(AppCxt);
 
   const listenLoc = () => {
     setShowHist(false);
@@ -52,7 +52,6 @@ const Compute = () => {
   const stopListenLoc = (isTesting: boolean) => {
     if (watchId === 0) return;
 
-    // clearInterval(watchId);
     navigator.geolocation.clearWatch(watchId);
 
     // getGraphData(isTesting);
@@ -78,7 +77,7 @@ const Compute = () => {
     setemissResult(emm);
 
     const dataToSave = {
-      accID: userAcc,
+      accID: userData.userAcc,
       vehData: {
         modelConfig: currVehicle.modelConfig,
         engineConfig: currVehicle.engineConfig,
@@ -110,7 +109,7 @@ const Compute = () => {
     fetch("api/mintCOOtkn", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: emm, receiver: userAcc }),
+      body: JSON.stringify({ amount: emm, receiver: userData.userAcc }),
     })
       .then((resp) => resp.json())
       .then((rdata) => {
@@ -122,10 +121,9 @@ const Compute = () => {
   };
 
   const updateBals = async () => {
-    const { hbar, token } = await getBals(userAcc);
+    const { hbar, token } = await getBals(userData.userAcc);
     console.log(hbar, token);
-    setHbarBal(hbar);
-    setTokenBal(token);
+    setUserData((usrData) => ({ ...usrData, hbarBal: hbar, tokenBal: token }));
 
     return token;
   };
@@ -145,8 +143,8 @@ const Compute = () => {
       </h3>
       {showHist && <Chart speedData={speedData} />}
 
-      <BaseBtn disabled={!userAcc || isListening} onClick={onGetEmission}>
-        {userAcc ? "Calculate" : "Connect to Calculate"}
+      <BaseBtn disabled={!userData.userAcc || isListening} onClick={onGetEmission}>
+        {userData.userAcc ? "Calculate" : "Connect to Calculate"}
       </BaseBtn>
 
       <div className="result">

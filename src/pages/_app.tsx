@@ -1,32 +1,15 @@
 import type { AppProps } from "next/app";
-import { createContext, useState } from "react";
-import type { SetStateAction } from "react";
-
-import type { HashConnectSigner } from "hashconnect/dist/provider/signer";
+import { useState } from "react";
 
 import RouteBtn from "../components/Buttons/RouteBtn";
 
 import "../index.css";
-import type { AppContextType } from "../types";
+import AppContext from "../contexts/AppContext";
 
-const initContext: AppContextType = {
-  userAcc: "",
-  setUserAcc: (acc: SetStateAction<string>) => {},
-  HPsigner: undefined,
-  setHPsigner: (sig: SetStateAction<HashConnectSigner | undefined>) => {},
-  hbarBal: "",
-  setHbarBal: (bal: SetStateAction<string>) => {},
-  tokenBal: 0,
-  setTokenBal: (bal: SetStateAction<number>) => {},
-  setIsMobileLink: (isLinked: SetStateAction<boolean>) => {},
-};
-
-export const AppContext = createContext<AppContextType>(initContext);
 export type CopyMssg = "Click to copy" | "Copied!" | "Please try again";
 
 function App({ Component, pageProps }: AppProps) {
   const [userAcc, setUserAcc] = useState("");
-  const [HPsigner, setHPsigner] = useState<HashConnectSigner>();
   const [hbarBal, setHbarBal] = useState("");
   const [tokenBal, setTokenBal] = useState(0);
   const [isMobileLink, setIsMobileLink] = useState(false);
@@ -44,19 +27,7 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <div className="app">
-      <AppContext.Provider
-        value={{
-          userAcc,
-          setUserAcc,
-          HPsigner,
-          setHPsigner,
-          hbarBal,
-          setHbarBal,
-          tokenBal,
-          setTokenBal,
-          setIsMobileLink,
-        }}
-      >
+      <AppContext>
         <div className="circle"></div>
         <h2>C-Auto</h2>
         <h4>Track your Carbon emissions from driving</h4>
@@ -90,7 +61,7 @@ function App({ Component, pageProps }: AppProps) {
         )}
 
         <Component {...pageProps} />
-      </AppContext.Provider>
+      </AppContext>
     </div>
   );
 }

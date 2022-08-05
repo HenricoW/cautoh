@@ -29,14 +29,17 @@ export type HCSaveData = {
   pairedAccounts: string[];
 };
 
-export interface AppContextType {
+export type UserDataType = {
   userAcc: string;
-  setUserAcc: Dispatch<SetStateAction<string>>;
-  HPsigner: HashConnectSigner | undefined;
-  setHPsigner: Dispatch<SetStateAction<HashConnectSigner | undefined>>;
   hbarBal: string;
-  setHbarBal: Dispatch<SetStateAction<string>>;
   tokenBal: number;
-  setTokenBal: Dispatch<SetStateAction<number>>;
+};
+
+export type AppCtxType = {
+  userData: UserDataType;
+  setUserData: Dispatch<SetStateAction<UserDataType>>;
+  HPsigner: HashConnectSigner | null;
+  setHPsigner: Dispatch<SetStateAction<HashConnectSigner | null>>;
+  isMobileLink: boolean;
   setIsMobileLink: Dispatch<SetStateAction<boolean>>;
-}
+};
