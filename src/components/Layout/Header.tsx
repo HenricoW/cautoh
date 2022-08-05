@@ -1,26 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import { AppCxt } from "../../contexts/AppContext";
+import useCopy from "../../hooks/useCopy";
 import RouteBtn from "../Buttons/RouteBtn";
 
-export type CopyMssg = "Click to copy" | "Copied!" | "Please try again";
 const textToCopy = "0.0.47698769";
 
 const Header = () => {
-  // TODO: extract to useCopy
-  const [copyStatus, setCopyStatus] = useState<CopyMssg>("Click to copy");
-
-  const copyText = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => setCopyStatus("Copied!"))
-      .catch((err) => {
-        console.log(err);
-        setCopyStatus("Please try again");
-      });
-  };
-
   const { userData, isMobileLink } = useContext(AppCxt);
+  const { copyStatus, copyText } = useCopy();
 
   return (
     <div>

@@ -5,16 +5,16 @@ import BaseBtn from "../components/Buttons/BaseBtn";
 import { HashConnector } from "../utils/hashpack";
 import { getBals, shortenStr } from "../utils/helpers";
 import { AppCxt } from "../contexts/AppContext";
+import useCopy from "../hooks/useCopy";
 
 const hashConnector = new HashConnector();
-export type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
 
 const Connect = () => {
   const [pairStr, setPairStr] = useState("");
-  const [copyStatus, setCopyStatus] = useState<CopyMssg>("Copy Pair String");
   const [pairShowing, setPairShowing] = useState(false);
 
   const { userData, setUserData, setHPsigner, setIsMobileLink } = useContext(AppCxt);
+  const { copyStatus, copyText } = useCopy();
 
   useEffect(() => {
     hashConnector
@@ -71,16 +71,6 @@ const Connect = () => {
     setUserData((usrData) => ({ ...usrData, hbarBal: hbar, tokenBal: token }));
   };
 
-  const copyText = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => setCopyStatus("Copied!"))
-      .catch((err) => {
-        console.log(err);
-        setCopyStatus("Please try again");
-      });
-  };
-
   return (
     <div className="acc-page">
       {pairStr && !userData.userAcc && (
@@ -96,6 +86,7 @@ const Connect = () => {
             <li>Hit "Approve"</li>
           </ol>
           <h2>{shortenStr(pairStr, 30)}</h2>
+
           <BaseBtn onClick={() => copyText(pairStr)}>{copyStatus}</BaseBtn>
         </>
       )}
