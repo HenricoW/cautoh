@@ -21,3 +21,11 @@ export type PushDataResponse = {
 export type PullDataResponse = PushDataResponse & {
   data: string;
 };
+
+export interface VehReqData {
+  year: number;
+  make?: string;
+  model?: string;
+}
+
+export type NameTypes = "years" | "makes" | "models" | "configData";
