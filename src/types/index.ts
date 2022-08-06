@@ -21,6 +21,16 @@ export type SpeedDataType = {
   speed: number;
 };
 
+export type ListenDataType = { isListening: boolean; watchId: number };
+export type TravelDataType = {
+  currVehicle: ConfigData | null;
+  locHist: LocationPoint[];
+  speedData: SpeedDataType[];
+  distance: number;
+  emissResult: number;
+};
+export type ViewDataType = { showHist: boolean; respMssg: string };
+
 export type HCSaveData = {
   topic: string;
   pairingString: string;
