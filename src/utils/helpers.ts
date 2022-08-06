@@ -8,6 +8,25 @@ export const shortenStr = (str: string, charCount: number) => {
 
 export const dotsToDashes = (str: string) => str.replaceAll(".", "-");
 
+export const fetchData = async (URL: string, hasData: boolean, reqData?: any) => {
+  try {
+    const resp = await fetch(
+      URL,
+      hasData
+        ? {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(reqData),
+          }
+        : {}
+    );
+
+    return await resp.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const processData = (locHist: LocationPoint[]) => {
   return locHist.map((pt) => ({ time: pt.ts, speed: pt.speed || 0 }));
 };
@@ -41,12 +60,7 @@ export const getDist = (sData: SpeedDataType[]) => {
 };
 
 export const getBals = async (userAcc: string) => {
-  return fetch("api/getBalances", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ accId: userAcc }),
-  })
-    .then((resp) => resp.json())
+  return fetchData("api/getBalances", true, { accId: userAcc })
     .then((balInfo) => {
       return { hbar: balInfo.bal.hbarBalance as string, token: +balInfo.bal.balance / 1000 };
     })

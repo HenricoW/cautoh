@@ -7,6 +7,7 @@ import BaseBtn from "../components/Buttons/BaseBtn";
 import { AppCxt } from "../contexts/AppContext";
 import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
 import type { ConfigData, LocationPoint, SpeedDataType } from "../types";
+import { fetchData } from "../utils/helpers";
 
 const Compute = () => {
   const [isListening, setIsListening] = useState(false);
@@ -27,7 +28,6 @@ const Compute = () => {
       console.log("geoloc supported");
 
       setIsListening(true);
-      // const wid = setInterval(getLoc, intMS);
       const wid = navigator.geolocation.watchPosition(
         (loc) => {
           let locPt = {
@@ -87,12 +87,7 @@ const Compute = () => {
       speedData,
     };
 
-    fetch("api/pushData", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataToSave),
-    })
-      .then((resp) => resp.json())
+    fetchData("api/pushData", true, dataToSave)
       .then((rdata) => {
         if (rdata.error) {
           setRespMssg("Error saving data");
@@ -106,12 +101,7 @@ const Compute = () => {
         console.log(err);
       });
 
-    fetch("api/mintCOOtkn", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: emm, receiver: userData.userAcc }),
-    })
-      .then((resp) => resp.json())
+    fetchData("api/mintCOOtkn", true, { amount: emm, receiver: userData.userAcc })
       .then((rdata) => {
         console.log("post mint", rdata);
         return updateBals();
