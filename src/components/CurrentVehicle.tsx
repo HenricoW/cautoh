@@ -1,5 +1,6 @@
 import React from "react";
-import { ConfigData } from "../utils/types";
+
+import type { ConfigData } from "../types";
 
 interface CurrentVehicleProps {
   currVehicle: ConfigData | null;

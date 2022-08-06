@@ -1,19 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { AppContext } from "./_app";
+
+import BaseBtn from "../components/Buttons/BaseBtn";
+
 import { HashConnector } from "../utils/hashpack";
 import { getBals, shortenStr } from "../utils/helpers";
-import type { HashConnectProvider } from "hashconnect/dist/provider/provider";
+import { AppCxt } from "../contexts/AppContext";
+import useCopy from "../hooks/useCopy";
 
 const hashConnector = new HashConnector();
-export type CopyMssg = "Copy Pair String" | "Copied!" | "Please try again";
 
 const Connect = () => {
   const [pairStr, setPairStr] = useState("");
-  const [copyStatus, setCopyStatus] = useState<CopyMssg>("Copy Pair String");
-  const [prov, setProv] = useState<HashConnectProvider>();
   const [pairShowing, setPairShowing] = useState(false);
 
-  const { userAcc, setUserAcc, setHPsigner, setHbarBal, setTokenBal, setIsMobileLink } = useContext(AppContext);
+  const { userData, setUserData, setHPsigner, setIsMobileLink } = useContext(AppCxt);
+  const { copyStatus, copyText } = useCopy();
 
   useEffect(() => {
     hashConnector
@@ -21,7 +22,7 @@ const Connect = () => {
       .then(() => {
         if (hashConnector.status !== "Paired") awaitPairing();
         else {
-          setUserAcc(hashConnector.saveData.pairedAccounts[0]);
+          setUserData((usrData) => ({ ...usrData, userAcc: hashConnector.saveData.pairedAccounts[0] }));
           getSigner();
         }
       })
@@ -46,7 +47,7 @@ const Connect = () => {
 
       hashConnector.saveDataInLocalstorage();
       getSigner();
-      setUserAcc(data.accountIds[0]);
+      setUserData((usrData) => ({ ...usrData, userAcc: data.accountIds[0] }));
       setIsMobileLink(false);
     });
   };
@@ -59,7 +60,6 @@ const Connect = () => {
     );
     const signer = hashConnector.hashconnect.getSigner(provider);
 
-    setProv(provider);
     setHPsigner(signer);
 
     await updateBals();
@@ -68,23 +68,12 @@ const Connect = () => {
   const updateBals = async () => {
     console.log("connect - updBals:", hashConnector.saveData.pairedAccounts[0]);
     const { hbar, token } = await getBals(hashConnector.saveData.pairedAccounts[0]);
-    setHbarBal(hbar);
-    setTokenBal(token);
-  };
-
-  const copyText = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => setCopyStatus("Copied!"))
-      .catch((err) => {
-        console.log(err);
-        setCopyStatus("Please try again");
-      });
+    setUserData((usrData) => ({ ...usrData, hbarBal: hbar, tokenBal: token }));
   };
 
   return (
     <div className="acc-page">
-      {pairStr && !userAcc && (
+      {pairStr && !userData.userAcc && (
         <>
           <ol>
             <li>Copy this pairing string</li>
@@ -97,20 +86,15 @@ const Connect = () => {
             <li>Hit "Approve"</li>
           </ol>
           <h2>{shortenStr(pairStr, 30)}</h2>
-          <button className="config-btn" onClick={() => copyText(pairStr)}>
-            {copyStatus}
-          </button>
+
+          <BaseBtn onClick={() => copyText(pairStr)}>{copyStatus}</BaseBtn>
         </>
       )}
 
-      {userAcc ? (
+      {userData.userAcc ? (
         <div className="success-text">Connected!</div>
       ) : (
-        !pairShowing && (
-          <button className="config-btn" onClick={connectWallet}>
-            Connect with HashPack
-          </button>
-        )
+        !pairShowing && <BaseBtn onClick={connectWallet}>Connect with HashPack</BaseBtn>
       )}
     </div>
   );

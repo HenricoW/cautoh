@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import Link from "next/link";
+
 import QRCode from "qrcode";
 import QrScanner from "qr-scanner";
+
+import BaseBtn from "../components/Buttons/BaseBtn";
+
 import { viewFinderSize } from "../utils/configs";
-import { AppContext } from "./_app";
-import Link from "next/link";
+import { AppCxt } from "../contexts/AppContext";
 
 const LinkAccount = () => {
   const [canvasVisible, setCanvasVisible] = useState(false);
   const [camOpen, setCamOpen] = useState(false);
   const [scanText, setScanText] = useState("Looking for Code...");
-  const [isConnected, setIsConnected] = useState(false);
 
-  const { userAcc, setUserAcc, setIsMobileLink } = useContext(AppContext);
+  const { userData, setUserData, setIsMobileLink } = useContext(AppCxt);
 
   const vidRef = useRef<HTMLVideoElement>(null);
   const scanRef = useRef<QrScanner>();
@@ -24,7 +27,7 @@ const LinkAccount = () => {
       vfinder!,
       (result) => {
         console.log("decoded qr code:", result.data);
-        setUserAcc(result.data);
+        setUserData((usrData) => ({ ...usrData, userAcc: result.data }));
         setIsMobileLink(true);
         onScanSuccess();
       },
@@ -35,9 +38,9 @@ const LinkAccount = () => {
     );
     scanRef.current = qrScanner;
 
-    console.log("connected account:", userAcc);
-    if (userAcc) {
-      QRCode.toCanvas(canv, userAcc).catch((err) => console.log(err));
+    console.log("connected account:", userData.userAcc);
+    if (userData.userAcc) {
+      QRCode.toCanvas(canv, userData.userAcc).catch((err) => console.log(err));
     }
   }, []);
 
@@ -63,10 +66,13 @@ const LinkAccount = () => {
 
   return (
     <div className="acc-page">
-      <canvas id="canvas" style={{ display: canvasVisible && !camOpen && userAcc ? "block" : "none" }}></canvas>
+      <canvas
+        id="canvas"
+        style={{ display: canvasVisible && !camOpen && userData.userAcc ? "block" : "none" }}
+      ></canvas>
       <video id="viewfinder" width={viewFinderSize} height={camOpen ? viewFinderSize : "0px"} ref={vidRef}></video>
 
-      {canvasVisible && !userAcc && !camOpen && (
+      {canvasVisible && !userData.userAcc && !camOpen && (
         <>
           <h2>Please connect with your HashPack wallet</h2>
           <div id="ext-link">
@@ -77,23 +83,15 @@ const LinkAccount = () => {
         </>
       )}
 
-      {!camOpen && (
-        <button className="config-btn" onClick={showCode}>
-          On Computer: Show Code
-        </button>
-      )}
+      {!camOpen && <BaseBtn onClick={showCode}>On Computer: Show Code</BaseBtn>}
 
       {camOpen ? (
         <>
           <h4>{scanText}</h4>
-          <button className="config-btn" onClick={closeScanner}>
-            Close Scanner
-          </button>
+          <BaseBtn onClick={closeScanner}>Close Scanner</BaseBtn>
         </>
       ) : (
-        <button className="config-btn" onClick={showScanner}>
-          On Mobile: Scan Code
-        </button>
+        <BaseBtn onClick={showScanner}>On Mobile: Scan Code</BaseBtn>
       )}
     </div>
   );

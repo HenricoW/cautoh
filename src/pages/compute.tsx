@@ -1,30 +1,34 @@
 import { useContext, useEffect, useState } from "react";
-import Chart from "../components/Chart";
+
 import CurrentVehicle from "../components/CurrentVehicle";
-import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
-import { ConfigData, LocationPoint, SpeedDataType } from "../utils/types";
-import { AppContext } from "./_app";
+import Chart from "../components/Chart";
+import BaseBtn from "../components/Buttons/BaseBtn";
+
+import { AppCxt } from "../contexts/AppContext";
+import { calcEmissions, getBals, getDataToSave, pushDataReq } from "../utils/helpers";
+import type { ListenDataType, TravelDataType, ViewDataType } from "../types";
+import { fetchData } from "../utils/helpers";
+import { getDist, getTestGraphData, graphData, processData } from "../utils/travel";
 
 const Compute = () => {
-  const [isListening, setIsListening] = useState(false);
-  const [locHist, setLocHist] = useState<LocationPoint[]>([]);
-  const [watchId, setWatchId] = useState<any>();
-  const [showHist, setShowHist] = useState(false);
-  const [speedData, setSpeedData] = useState<SpeedDataType[]>([]);
-  const [distance, setDistance] = useState(0);
-  const [emissResult, setemissResult] = useState(0);
-  const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
-  const [respMssg, setRespMssg] = useState("");
+  const [listenData, setListenData] = useState<ListenDataType>({ isListening: false, watchId: 0 });
+  const [travelData, setTravelData] = useState<TravelDataType>({
+    currVehicle: null,
+    locHist: [],
+    speedData: [],
+    distance: 0,
+    emissResult: 0,
+  });
+  const [viewData, setViewData] = useState<ViewDataType>({ showHist: false, respMssg: "" });
 
-  const { userAcc, setHbarBal, setTokenBal } = useContext(AppContext);
+  const { userData, setUserData } = useContext(AppCxt);
 
   const listenLoc = () => {
-    setShowHist(false);
+    setViewData((data) => ({ ...data, showHist: false }));
     if ("geolocation" in navigator) {
       console.log("geoloc supported");
 
-      setIsListening(true);
-      // const wid = setInterval(getLoc, intMS);
+      setListenData((data) => ({ ...data, isListening: true }));
       const wid = navigator.geolocation.watchPosition(
         (loc) => {
           let locPt = {
@@ -33,83 +37,49 @@ const Compute = () => {
             ts: loc.timestamp,
           };
 
-          setLocHist((hist) => [...hist, locPt]);
+          setTravelData((data) => ({ ...data, locHist: [...data.locHist, locPt] }));
         },
         (err) => console.log(err),
         { enableHighAccuracy: true }
       );
 
-      setWatchId(wid);
-      setRespMssg("");
+      setListenData((data) => ({ ...data, watchId: wid }));
+      setViewData((data) => ({ ...data, respMssg: "" }));
     } else {
       console.log("geoloc NOT supported");
     }
   };
 
   const stopListenLoc = (isTesting: boolean) => {
-    if (watchId === 0) return;
+    if (listenData.watchId === 0) return;
 
-    // clearInterval(watchId);
-    navigator.geolocation.clearWatch(watchId);
+    navigator.geolocation.clearWatch(listenData.watchId);
 
     // getGraphData(isTesting);
-    const pData = processData(locHist);
+    const pData = processData(travelData.locHist);
     const gData = isTesting ? getTestGraphData() : graphData(pData);
 
-    setSpeedData(gData);
-    setDistance(getDist(gData));
-    setIsListening(false);
-    setWatchId(0);
-    setShowHist(true);
+    setTravelData((data) => ({ ...data, speedData: gData, distance: getDist(gData) }));
+    setListenData({ isListening: false, watchId: 0 });
+    setViewData((data) => ({ ...data, showHist: true }));
   };
 
   useEffect(() => {
     const veh = localStorage.getItem("vehConfig");
-    if (veh) setCurrVehicle(JSON.parse(veh));
+    if (veh) setTravelData((data) => ({ ...data, currVehicle: JSON.parse(veh) }));
   }, []);
 
   const onGetEmission = async () => {
-    if (!currVehicle) return;
+    if (!travelData.currVehicle) return;
 
-    const emm = (currVehicle.co2pm * distance) / 1609;
-    setemissResult(emm);
+    const emm = calcEmissions(travelData);
+    setTravelData((data) => ({ ...data, emissResult: emm }));
 
-    const dataToSave = {
-      accID: userAcc,
-      vehData: {
-        modelConfig: currVehicle.modelConfig,
-        engineConfig: currVehicle.engineConfig,
-        fuel: currVehicle.fuel,
-        co2pm: currVehicle.co2pm,
-      },
-      speedData,
-    };
+    const dataToSave = getDataToSave(userData, travelData);
+    const respStr = await pushDataReq(dataToSave);
+    setViewData((data) => ({ ...data, respMssg: respStr }));
 
-    fetch("api/pushData", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataToSave),
-    })
-      .then((resp) => resp.json())
-      .then((rdata) => {
-        if (rdata.error) {
-          setRespMssg("Error saving data");
-          console.log(rdata.message);
-        } else {
-          setRespMssg("Data Saved!");
-        }
-      })
-      .catch((err) => {
-        setRespMssg("Error saving data");
-        console.log(err);
-      });
-
-    fetch("api/mintCOOtkn", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: emm, receiver: userAcc }),
-    })
-      .then((resp) => resp.json())
+    fetchData("api/mintCOOtkn", true, { amount: emm, receiver: userData.userAcc })
       .then((rdata) => {
         console.log("post mint", rdata);
         return updateBals();
@@ -119,36 +89,35 @@ const Compute = () => {
   };
 
   const updateBals = async () => {
-    const { hbar, token } = await getBals(userAcc);
+    const { hbar, token } = await getBals(userData.userAcc);
     console.log(hbar, token);
-    setHbarBal(hbar);
-    setTokenBal(token);
+    setUserData((usrData) => ({ ...usrData, hbarBal: hbar, tokenBal: token }));
 
     return token;
   };
 
-  const toggleRec = () => (isListening ? stopListenLoc(false) : listenLoc());
+  const toggleRec = () => (listenData.isListening ? stopListenLoc(false) : listenLoc());
 
   return (
     <>
-      <CurrentVehicle currVehicle={currVehicle} />
+      <CurrentVehicle currVehicle={travelData.currVehicle} />
       <div className="ctrlgroup">
-        <div className={"start-stop-btn" + (isListening ? " rec" : "")} onClick={toggleRec}>
-          {isListening ? "Pause" : "Start"}
+        <div className={"start-stop-btn" + (listenData.isListening ? " rec" : "")} onClick={toggleRec}>
+          {listenData.isListening ? "Pause" : "Start"}
         </div>
       </div>
       <h3>
-        Distance: {(distance / 1000).toFixed(3)} km / {(distance / 1609).toFixed(3)} mi
+        Distance: {(travelData.distance / 1000).toFixed(3)} km / {(travelData.distance / 1609).toFixed(3)} mi
       </h3>
-      {showHist && <Chart speedData={speedData} />}
+      {viewData.showHist && <Chart speedData={travelData.speedData} />}
 
-      <button className={"config-btn"} disabled={!userAcc || isListening} onClick={onGetEmission}>
-        {userAcc ? "Calculate" : "Connect to Calculate"}
-      </button>
+      <BaseBtn disabled={!userData.userAcc || listenData.isListening} onClick={onGetEmission}>
+        {userData.userAcc ? "Calculate" : "Connect to Calculate"}
+      </BaseBtn>
 
       <div className="result">
-        <p>{respMssg}</p>
-        <h2>{emissResult.toFixed(2)} grams of CO2</h2>
+        <p>{viewData.respMssg}</p>
+        <h2>{travelData.emissResult.toFixed(2)} grams of CO2</h2>
       </div>
     </>
   );

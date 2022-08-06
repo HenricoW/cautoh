@@ -1,5 +1,5 @@
-import { HashConnect, HashConnectTypes, MessageTypes } from "hashconnect";
-import { HCSaveData } from "./types";
+import { HashConnect, HashConnectTypes } from "hashconnect";
+import type { HCSaveData } from "../types";
 
 export class HashConnector {
   constructor() {}

@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+
+import BaseBtn from "../components/Buttons/BaseBtn";
+import RouteBtn from "../components/Buttons/RouteBtn";
 import CurrentVehicle from "../components/CurrentVehicle";
-import { baseURL, configsPt, makesPt, modelsPt, yearsPt } from "../utils/configs";
-import { ConfigData } from "../utils/types";
-import { AppContext } from "./_app";
+import RenderVehicleOptions from "../components/RenderVehicleOptions";
+
+import type { ConfigData } from "../types";
+import { getConfigs, getMakes, getModels, getYears } from "../utils/vehicle";
 
 const Home: NextPage = () => {
   const [allYears, setAllYears] = useState<string[]>([]);
@@ -19,83 +23,24 @@ const Home: NextPage = () => {
 
   const [currVehicle, setCurrVehicle] = useState<ConfigData | null>(null);
 
-  const { userAcc } = useContext(AppContext);
-  const router = useRouter();
+  useEffect(() => {
+    const veh = localStorage.getItem("vehConfig");
+    if (veh) setCurrVehicle(JSON.parse(veh));
 
-  const fetchYears = useMemo(() => {
-    console.log("Getting years");
-    return fetch(baseURL + yearsPt)
-      .then((resp) => resp.json())
-      .then((res) => setAllYears(res.years as string[]))
-      .catch((err) => {
-        console.log(err);
-        return ["0"];
-      });
+    getYears().then((years) => setAllYears(years));
   }, []);
 
-  const fetchMakes = useMemo(() => {
-    if (year === 0) return;
-    console.log("Getting makes");
-    return fetch(baseURL + makesPt, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ year }),
-    })
-      .then((resp) => resp.json())
-      .then((res) => setAllMakes(res.makes as string[]))
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    getMakes(year).then((makes) => setAllMakes(makes));
   }, [year]);
 
-  const fetchModels = useMemo(() => {
-    if (make === "") return;
-    console.log("Getting models");
-    return fetch(baseURL + modelsPt, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ year, make }),
-    })
-      .then((resp) => resp.json())
-      .then((res) => setAllModels(res.models as string[]))
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    getModels(year, make).then((models) => setAllModels(models));
   }, [make]);
 
-  const fetchConfigs = useMemo(() => {
-    if (make === "") return;
-    console.log("Getting configs");
-    return fetch(baseURL + configsPt, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ year, make, model }),
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        console.log(res.configData);
-        setAllConfigs(res.configData as ConfigData[]);
-      })
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    getConfigs(year, make, model).then((configs) => setAllConfigs(configs));
   }, [model]);
-
-  // console.log("rendering");
-
-  const onYearUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setYear(+e.target.value);
-  };
-
-  const onMakeUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setMake(e.target.value);
-  };
-
-  const onModelUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
-    setModel(e.target.value);
-  };
-
-  const onConfigUpdate = (index: number) => {
-    console.log(index);
-    setIdxSelected((oldi) => index);
-  };
 
   const onSelectFinish = () => {
     console.log(allConfigs[idxSelected]);
@@ -103,50 +48,20 @@ const Home: NextPage = () => {
     router.push("compute");
   };
 
-  useEffect(() => {
-    const veh = localStorage.getItem("vehConfig");
-    if (veh) setCurrVehicle(JSON.parse(veh));
-  }, []);
-
+  const router = useRouter();
   return (
     <>
-      <button className="wallet-btn" onClick={() => router.push("/linkAccount")}>
-        Link with Mobile
-      </button>
+      <RouteBtn text="Link with Mobile" route="linkAccount" />
 
       <section className="vehicle-selection">
         <CurrentVehicle currVehicle={currVehicle} />
+
         <h3>What vehicle do you drive?</h3>
-        <select name="years" id="years" onChange={(e) => onYearUpdate(e)}>
-          <option value="">Year</option>
-          {allYears.map((y) => (
-            <option key={y} value={y}>
-              {y}
-            </option>
-          ))}
-        </select>
+        <RenderVehicleOptions name="Year" arrayData={allYears} setterNum={setYear} />
 
-        {allMakes.length > 1 && (
-          <select name="makes" id="makes" onChange={(e) => onMakeUpdate(e)}>
-            <option value="">Make</option>
-            {allMakes.map((mk) => (
-              <option key={mk} value={mk}>
-                {mk}
-              </option>
-            ))}
-          </select>
-        )}
+        {allMakes.length > 1 && <RenderVehicleOptions name="Make" arrayData={allMakes} setterStr={setMake} />}
 
-        {allModels.length > 1 && (
-          <select name="models" id="models" onChange={(e) => onModelUpdate(e)}>
-            <option value="">Model</option>
-            {allModels.map((md) => (
-              <option key={md} value={md}>
-                {md}
-              </option>
-            ))}
-          </select>
-        )}
+        {allModels.length > 1 && <RenderVehicleOptions name="Model" arrayData={allModels} setterStr={setModel} />}
 
         {allConfigs.length > 1 && (
           <>
@@ -155,7 +70,7 @@ const Home: NextPage = () => {
               <div
                 className={`${index === idxSelected ? " selected" : "configs"}`}
                 key={cf.modelConfig + cf.engineConfig}
-                onClick={() => onConfigUpdate(index)}
+                onClick={() => setIdxSelected(() => index)}
               >
                 <h4>{cf.modelConfig}</h4>
                 <p>{cf.engineConfig}</p>
@@ -163,21 +78,14 @@ const Home: NextPage = () => {
               </div>
             ))}
 
-            <button className="config-btn" onClick={onSelectFinish}>
-              DONE
-            </button>
+            <BaseBtn onClick={onSelectFinish}>DONE</BaseBtn>
           </>
         )}
       </section>
 
-      {!model && (
-        <button className="config-btn" onClick={() => router.push("compute")}>
-          Track Emissions Now
-        </button>
-      )}
+      {!model && <RouteBtn text="Track Emissions Now" route="compute" />}
     </>
   );
 };
 
-// export default React.memo(Home);
 export default Home;

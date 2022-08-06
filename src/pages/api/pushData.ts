@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import { dotsToDashes } from "../../utils/helpers";
-import { PushDataResponse } from "../../utils/types";
+import type { PushDataResponse } from "../../types/api";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<PushDataResponse>) {
   const accID: string = req.body.accID;
