@@ -5,9 +5,10 @@ import Chart from "../components/Chart";
 import BaseBtn from "../components/Buttons/BaseBtn";
 
 import { AppCxt } from "../contexts/AppContext";
-import { getBals, getDist, getTestGraphData, graphData, processData } from "../utils/helpers";
+import { calcEmissions, getBals, getDataToSave, pushDataReq } from "../utils/helpers";
 import type { ListenDataType, TravelDataType, ViewDataType } from "../types";
 import { fetchData } from "../utils/helpers";
+import { getDist, getTestGraphData, graphData, processData } from "../utils/travel";
 
 const Compute = () => {
   const [listenData, setListenData] = useState<ListenDataType>({ isListening: false, watchId: 0 });
@@ -69,35 +70,14 @@ const Compute = () => {
   }, []);
 
   const onGetEmission = async () => {
-    if (!currVehicle) return;
+    if (!travelData.currVehicle) return;
 
-    const emm = (currVehicle.co2pm * distance) / 1609;
-    setemissResult(emm);
+    const emm = calcEmissions(travelData);
+    setTravelData((data) => ({ ...data, emissResult: emm }));
 
-    const dataToSave = {
-      accID: userData.userAcc,
-      vehData: {
-        modelConfig: currVehicle.modelConfig,
-        engineConfig: currVehicle.engineConfig,
-        fuel: currVehicle.fuel,
-        co2pm: currVehicle.co2pm,
-      },
-      speedData,
-    };
-
-    fetchData("api/pushData", true, dataToSave)
-      .then((rdata) => {
-        if (rdata.error) {
-          setRespMssg("Error saving data");
-          console.log(rdata.message);
-        } else {
-          setRespMssg("Data Saved!");
-        }
-      })
-      .catch((err) => {
-        setRespMssg("Error saving data");
-        console.log(err);
-      });
+    const dataToSave = getDataToSave(userData, travelData);
+    const respStr = await pushDataReq(dataToSave);
+    setViewData((data) => ({ ...data, respMssg: respStr }));
 
     fetchData("api/mintCOOtkn", true, { amount: emm, receiver: userData.userAcc })
       .then((rdata) => {
