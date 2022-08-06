@@ -1,14 +1,18 @@
+@use "../../../styles/colours";
+@use "../../../styles/variables";
+@use "../../../styles/fonts";
+
 .circle {
   margin: 10px auto;
   width: 50px;
   height: 50px;
-  background-color: #1e90ff;
+  background-color: colours.$primary;
   border-radius: 50%;
 }
 
 .acc-summary {
-  border: solid #3f3f3f 3px;
-  border-radius: 10px;
+  border: solid colours.$dark-II 3px;
+  border-radius: variables.$border-rad;
   max-width: 350px;
   margin: 0.5em auto;
   padding: 0.75em 0;
@@ -18,7 +22,7 @@
   .cag-balance {
     display: flex;
     justify-content: center;
-    gap: 1em;
+    gap: variables.$base-gap;
 
     p {
       margin: 0.3em 0;
@@ -27,11 +31,11 @@
 
   .acc-id {
     font-weight: bold;
-    color: #62abf5;
+    color: colours.$primary;
   }
 
   .cag-balance {
-    font-size: 1.2em;
+    font-size: fonts.$md;
     font-weight: bold;
   }
 }

@@ -1,18 +1,22 @@
+@use "../../styles/colours";
+@use "../../styles/variables";
+@use "../../styles/fonts";
+
 .ctrlgroup {
   width: fit-content;
   margin: 2em auto;
   display: flex;
-  gap: 1em;
+  gap: variables.$base-gap;
 
   .start-stop-btn {
-    font-size: 2em;
-    border: 3px solid #11c211;
-    border-radius: 10px;
+    font-size: fonts.$xl;
+    border: 3px solid colours.$success;
+    border-radius: variables.$border-rad;
     padding: 1em;
     cursor: pointer;
   }
 
   .rec {
-    border-color: #ec461c;
+    border-color: colours.$recording;
   }
 }

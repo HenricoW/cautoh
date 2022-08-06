@@ -1,10 +1,14 @@
+@use "../../../styles/colours";
+@use "../../../styles/variables";
+@use "../../../styles/fonts";
+
 .select {
-  font-size: 1.2em;
+  font-size: fonts.$md;
   padding: 5px;
   display: block;
   margin: 0.7em auto;
   min-width: 15em;
-  border-radius: 5px;
-  background-color: #3f3f3f;
+  border-radius: 0.5 * variables.$border-rad;
+  background-color: colours.$dark-II;
   color: inherit;
 }

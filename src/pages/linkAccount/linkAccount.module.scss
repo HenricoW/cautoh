@@ -1,7 +1,11 @@
+@use "../../styles/colours";
+@use "../../styles/fonts";
+@use "../../styles/variables";
+
 .acc-page {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: variables.$base-gap;
   align-items: center;
   margin-top: 2em;
 
@@ -16,8 +20,8 @@
   .ext-link {
     a {
       text-decoration: none;
-      color: #62abf5;
-      font-size: 1.1em;
+      color: colours.$primary-light;
+      font-size: fonts.$md;
       font-weight: bold;
     }
 

@@ -1,11 +1,14 @@
+@use "./colours";
+@use "./variables";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #282c34;
-  color: white;
+  background-color: colours.$dark-I;
+  color: colours.$font;
 }
 
 code {
@@ -36,20 +39,20 @@ code {
 
   .vehicle-selection {
     .configs {
-      border: solid #3f3f3f 3px;
-      border-radius: 10px;
+      border: solid colours.$dark-II 3px;
+      border-radius: variables.$border-rad;
       max-width: 350px;
       margin: 0.5em auto;
 
       &:hover {
         cursor: pointer;
-        border-color: #333ea0;
+        border-color: colours.$primary-muted;
       }
     }
 
     .selected {
-      border: solid #1e90ff 3px;
-      border-radius: 10px;
+      border: solid colours.$primary 3px;
+      border-radius: variables.$border-rad;
       max-width: 350px;
       margin: 0.5em auto;
     }

@@ -1,6 +1,9 @@
+@use "../../styles/colours";
+@use "../../styles/variables";
+
 .selected-vehicle {
-  border: solid #3f3f3f 3px;
-  border-radius: 10px;
+  border: solid colours.$dark-II 3px;
+  border-radius: variables.$border-rad;
   max-width: 350px;
   margin: 0.5em auto;
 }
