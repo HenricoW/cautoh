@@ -2,10 +2,10 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import BaseBtn from "../components/Buttons/BaseBtn";
+import BaseBtn from "../components/Buttons/Button";
 import RouteBtn from "../components/Buttons/RouteBtn";
 import CurrentVehicle from "../components/CurrentVehicle";
-import RenderVehicleOptions from "../components/RenderVehicleOptions";
+import RenderVehicleOptions from "../components/Forms/VehicleOptions";
 
 import type { ConfigData } from "../types";
 import { getConfigs, getMakes, getModels, getYears } from "../utils/vehicle";

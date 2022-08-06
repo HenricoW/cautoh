@@ -4,10 +4,12 @@ import Link from "next/link";
 import QRCode from "qrcode";
 import QrScanner from "qr-scanner";
 
-import BaseBtn from "../components/Buttons/BaseBtn";
+import BaseBtn from "../../components/Buttons/Button";
 
-import { viewFinderSize } from "../utils/configs";
-import { AppCxt } from "../contexts/AppContext";
+import { viewFinderSize } from "../../utils/configs";
+import { AppCxt } from "../../contexts/AppContext";
+
+import styles from "./linkAccount.module.scss";
 
 const LinkAccount = () => {
   const [canvasVisible, setCanvasVisible] = useState(false);
@@ -65,17 +67,20 @@ const LinkAccount = () => {
   };
 
   return (
-    <div className="acc-page">
+    <div className={styles["acc-page"]}>
+      {/* QR display */}
       <canvas
         id="canvas"
-        style={{ display: canvasVisible && !camOpen && userData.userAcc ? "block" : "none" }}
+        className={canvasVisible && !camOpen && userData.userAcc ? styles.show : styles.hide}
       ></canvas>
+
+      {/* Scanner view */}
       <video id="viewfinder" width={viewFinderSize} height={camOpen ? viewFinderSize : "0px"} ref={vidRef}></video>
 
       {canvasVisible && !userData.userAcc && !camOpen && (
         <>
           <h2>Please connect with your HashPack wallet</h2>
-          <div id="ext-link">
+          <div className={styles["ext-link"]}>
             <Link href="https://chrome.google.com/webstore/detail/hashpack/gjagmgiddbbciopjhllkdnddhcglnemk">
               Install on Chrome or Brave
             </Link>

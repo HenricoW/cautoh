@@ -1,0 +1,28 @@
+.acc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  margin-top: 2em;
+
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .ext-link {
+    a {
+      text-decoration: none;
+      color: #62abf5;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
