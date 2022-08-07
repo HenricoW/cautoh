@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: variables.$base-gap;
   align-items: center;
-  margin-top: 2em;
+  margin-top: variables.$margin-lg;
 
   .show {
     display: block;

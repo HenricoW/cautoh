@@ -3,12 +3,12 @@
 @use "../../../styles/fonts";
 
 .config-btn {
-  border: solid colours.$primary 3px;
+  border: solid colours.$primary variables.$border-width;
   border-radius: variables.$border-rad;
   background-color: unset;
   font-size: fonts.$md;
-  padding: 15px 30px;
-  margin: 1em 0;
+  padding: variables.$base-padding variables.$padding-xl;
+  margin: variables.$base-margin 0;
   color: colours.$primary;
 
   &:hover {
@@ -18,7 +18,7 @@
   }
 
   &:disabled {
-    border: solid colours.$primary-muted 3px;
+    border: solid colours.$primary-muted variables.$border-width;
     color: colours.$primary-muted;
 
     &:hover {

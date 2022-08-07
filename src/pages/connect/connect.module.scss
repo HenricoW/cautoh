@@ -7,13 +7,13 @@
   flex-direction: column;
   gap: variables.$base-gap;
   align-items: center;
-  margin-top: 2em;
+  margin-top: variables.$margin-lg;
 }
 
 .success-text {
   font-size: fonts.$lg;
   color: colours.$success;
-  padding: 0.5em 1em;
-  border: solid colours.$success 3px;
+  padding: variables.$padding-sm variables.$padding-lg;
+  border: solid colours.$success variables.$border-width;
   border-radius: variables.$border-rad;
 }

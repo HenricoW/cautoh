@@ -23,7 +23,7 @@ code {
     .recharts-wrapper {
       position: relative;
       cursor: default;
-      width: 350px;
+      width: variables.$width-I;
       height: 250px;
       margin: 0 auto;
     }
@@ -39,10 +39,10 @@ code {
 
   .vehicle-selection {
     .configs {
-      border: solid colours.$dark-II 3px;
+      border: solid colours.$dark-II variables.$border-width;
       border-radius: variables.$border-rad;
-      max-width: 350px;
-      margin: 0.5em auto;
+      max-width: variables.$width-I;
+      margin: variables.$margin-sm auto;
 
       &:hover {
         cursor: pointer;
@@ -51,10 +51,10 @@ code {
     }
 
     .selected {
-      border: solid colours.$primary 3px;
+      border: solid colours.$primary variables.$border-width;
       border-radius: variables.$border-rad;
-      max-width: 350px;
-      margin: 0.5em auto;
+      max-width: variables.$width-I;
+      margin: variables.$margin-sm auto;
     }
   }
 }
