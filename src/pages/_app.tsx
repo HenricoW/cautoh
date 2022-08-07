@@ -6,6 +6,7 @@ import AppContext from "../contexts/AppContext";
 import Header from "../components/Layout/Header";
 
 function App({ Component, pageProps }: AppProps) {
+  // console.log("[Rendering] _app");
   return (
     <div className="app">
       <AppContext>
