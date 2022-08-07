@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import BaseBtn from "../components/Buttons/BaseBtn";
+import BaseBtn from "../../components/Buttons/Button";
 
-import { HashConnector } from "../utils/hashpack";
-import { getBals, shortenStr } from "../utils/helpers";
-import { AppCxt } from "../contexts/AppContext";
-import useCopy from "../hooks/useCopy";
+import { HashConnector } from "../../utils/hashpack";
+import { getBals, shortenStr } from "../../utils/helpers";
+import { AppCxt } from "../../contexts/AppContext";
+import useCopy from "../../hooks/useCopy";
+
+import styles from "./connect.module.scss";
 
 const hashConnector = new HashConnector();
 
@@ -72,7 +74,7 @@ const Connect = () => {
   };
 
   return (
-    <div className="acc-page">
+    <div className={styles["acc-page"]}>
       {pairStr && !userData.userAcc && (
         <>
           <ol>
@@ -92,7 +94,7 @@ const Connect = () => {
       )}
 
       {userData.userAcc ? (
-        <div className="success-text">Connected!</div>
+        <div className={styles["success-text"]}>Connected!</div>
       ) : (
         !pairShowing && <BaseBtn onClick={connectWallet}>Connect with HashPack</BaseBtn>
       )}

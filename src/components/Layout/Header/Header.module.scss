@@ -1,0 +1,48 @@
+@use "../../../styles/colours";
+@use "../../../styles/variables";
+@use "../../../styles/fonts";
+
+.circle {
+  margin: variables.$margin-lg auto variables.$base-margin;
+  width: 50px;
+  height: 50px;
+  background-color: colours.$primary;
+  border-radius: 50%;
+}
+
+.acc-summary {
+  border: solid colours.$dark-II variables.$border-width;
+  border-radius: variables.$border-rad;
+  max-width: variables.$width-I;
+  margin: variables.$margin-sm auto;
+  padding: variables.$padding-lg 0;
+
+  .acc-id,
+  .acc-balance,
+  .cag-balance {
+    display: flex;
+    justify-content: center;
+    gap: variables.$base-gap;
+
+    p {
+      margin: variables.$margin-xs 0;
+    }
+  }
+
+  .acc-id,
+  .copy-str {
+    font-weight: bold;
+    color: colours.$primary-light;
+  }
+
+  .copy-str {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .cag-balance {
+    font-size: fonts.$md;
+    font-weight: bold;
+  }
+}

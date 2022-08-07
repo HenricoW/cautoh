@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 
-import CurrentVehicle from "../components/CurrentVehicle";
-import Chart from "../components/Chart";
-import BaseBtn from "../components/Buttons/BaseBtn";
+import CurrentVehicle from "../../components/CurrentVehicle";
+import Chart from "../../components/Chart";
+import BaseBtn from "../../components/Buttons/Button";
 
-import { AppCxt } from "../contexts/AppContext";
-import { calcEmissions, getBals, getDataToSave, pushDataReq } from "../utils/helpers";
-import type { ListenDataType, TravelDataType, ViewDataType } from "../types";
-import { fetchData } from "../utils/helpers";
-import { getDist, getTestGraphData, graphData, processData } from "../utils/travel";
+import { AppCxt } from "../../contexts/AppContext";
+import { calcEmissions, getBals, getDataToSave, pushDataReq } from "../../utils/helpers";
+import type { ListenDataType, TravelDataType, ViewDataType } from "../../types";
+import { fetchData } from "../../utils/helpers";
+import { getDist, getTestGraphData, graphData, processData } from "../../utils/travel";
 
 const Compute = () => {
   const [listenData, setListenData] = useState<ListenDataType>({ isListening: false, watchId: 0 });
@@ -99,7 +99,7 @@ const Compute = () => {
   const toggleRec = () => (listenData.isListening ? stopListenLoc(false) : listenLoc());
 
   return (
-    <>
+    <div className="compute-pg">
       <CurrentVehicle currVehicle={travelData.currVehicle} />
       <div className="ctrlgroup">
         <div className={"start-stop-btn" + (listenData.isListening ? " rec" : "")} onClick={toggleRec}>
@@ -119,7 +119,7 @@ const Compute = () => {
         <p>{viewData.respMssg}</p>
         <h2>{travelData.emissResult.toFixed(2)} grams of CO2</h2>
       </div>
-    </>
+    </div>
   );
 };
 

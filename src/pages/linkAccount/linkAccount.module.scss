@@ -1,0 +1,32 @@
+@use "../../styles/colours";
+@use "../../styles/fonts";
+@use "../../styles/variables";
+
+.acc-page {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$base-gap;
+  align-items: center;
+  margin-top: variables.$margin-lg;
+
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .ext-link {
+    a {
+      text-decoration: none;
+      color: colours.$primary-light;
+      font-size: fonts.$md;
+      font-weight: bold;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

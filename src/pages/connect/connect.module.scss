@@ -1,0 +1,19 @@
+@use "../../styles/colours";
+@use "../../styles/variables";
+@use "../../styles/fonts";
+
+.acc-page {
+  display: flex;
+  flex-direction: column;
+  gap: variables.$base-gap;
+  align-items: center;
+  margin-top: variables.$margin-lg;
+}
+
+.success-text {
+  font-size: fonts.$lg;
+  color: colours.$success;
+  padding: variables.$padding-sm variables.$padding-lg;
+  border: solid colours.$success variables.$border-width;
+  border-radius: variables.$border-rad;
+}

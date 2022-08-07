@@ -1,0 +1,29 @@
+@use "../../../styles/colours";
+@use "../../../styles/variables";
+@use "../../../styles/fonts";
+
+.config-btn {
+  border: solid colours.$primary variables.$border-width;
+  border-radius: variables.$border-rad;
+  background-color: unset;
+  font-size: fonts.$md;
+  padding: variables.$base-padding variables.$padding-xl;
+  margin: variables.$base-margin 0;
+  color: colours.$primary;
+
+  &:hover {
+    background-color: colours.$primary;
+    color: black;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    border: solid colours.$primary-muted variables.$border-width;
+    color: colours.$primary-muted;
+
+    &:hover {
+      cursor: not-allowed;
+      background-color: unset;
+    }
+  }
+}

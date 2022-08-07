@@ -1,0 +1,22 @@
+@use "../../styles/colours";
+@use "../../styles/variables";
+@use "../../styles/fonts";
+
+.ctrlgroup {
+  width: fit-content;
+  margin: variables.$margin-lg auto;
+  display: flex;
+  gap: variables.$base-gap;
+
+  .start-stop-btn {
+    font-size: fonts.$xl;
+    border: variables.$border-width solid colours.$success;
+    border-radius: variables.$border-rad;
+    padding: variables.$padding-lg;
+    cursor: pointer;
+  }
+
+  .rec {
+    border-color: colours.$recording;
+  }
+}

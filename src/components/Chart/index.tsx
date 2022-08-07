@@ -2,7 +2,8 @@ import React from "react";
 
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
-import type { SpeedDataType } from "../types";
+import type { SpeedDataType } from "../../types";
+import styles from "./Chart.module.scss";
 
 type ChartProps = {
   speedData: SpeedDataType[];
@@ -11,7 +12,7 @@ type ChartProps = {
 const Chart = ({ speedData }: ChartProps) => {
   return (
     <div>
-      <div style={{ margin: "3em auto 0" }}>
+      <div className={styles["chart-container"]}>
         <LineChart width={350} height={250} data={speedData}>
           <Line type="monotone" dataKey="speed" stroke="#ddd" />
           <CartesianGrid stroke="#bbb" strokeDasharray="5 5" />

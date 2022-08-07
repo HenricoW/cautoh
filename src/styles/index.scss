@@ -1,0 +1,57 @@
+@use "./colours";
+@use "./variables";
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: colours.$dark-I;
+  color: colours.$font;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Layout */
+.app {
+  text-align: center;
+
+  .compute-pg {
+    .recharts-wrapper {
+      position: relative;
+      cursor: default;
+      width: variables.$width-I;
+      height: 250px;
+      margin: 0 auto;
+    }
+
+    .recharts-xAxis > .recharts-label {
+      transform: translate(0px, -20px);
+    }
+
+    .recharts-yAxis > .recharts-label {
+      transform: rotate(-90deg) translate(-190px, -90px);
+    }
+  }
+
+  .vehicle-selection {
+    .configs {
+      border: solid colours.$dark-II variables.$border-width;
+      border-radius: variables.$border-rad;
+      max-width: variables.$width-I;
+      margin: variables.$margin-sm auto;
+
+      &:hover {
+        cursor: pointer;
+        border-color: colours.$primary-muted;
+      }
+    }
+
+    .selected {
+      border: solid colours.$primary variables.$border-width;
+    }
+  }
+}

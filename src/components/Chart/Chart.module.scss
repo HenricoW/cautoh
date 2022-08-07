@@ -1,0 +1,5 @@
+@use "../../styles/variables";
+
+.chart-container {
+  margin: variables.$margin-lg auto 0;
+}

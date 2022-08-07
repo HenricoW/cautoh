@@ -1,0 +1,14 @@
+@use "../../../styles/colours";
+@use "../../../styles/variables";
+@use "../../../styles/fonts";
+
+.select {
+  font-size: fonts.$md;
+  padding: variables.$padding-xs;
+  display: block;
+  margin: variables.$margin-sm auto;
+  min-width: 15em;
+  border-radius: 0.5 * variables.$border-rad;
+  background-color: colours.$dark-II;
+  color: inherit;
+}
