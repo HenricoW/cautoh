@@ -52,9 +52,6 @@ code {
 
     .selected {
       border: solid colours.$primary variables.$border-width;
-      border-radius: variables.$border-rad;
-      max-width: variables.$width-I;
-      margin: variables.$margin-sm auto;
     }
   }
 }

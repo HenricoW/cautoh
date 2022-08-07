@@ -68,7 +68,7 @@ const Home: NextPage = () => {
             <h3>Select your configuration</h3>
             {allConfigs.map((cf, index) => (
               <div
-                className={`${index === idxSelected ? " selected" : "configs"}`}
+                className={`configs ${index === idxSelected ? "selected" : ""}`}
                 key={cf.modelConfig + cf.engineConfig}
                 onClick={() => setIdxSelected(() => index)}
               >

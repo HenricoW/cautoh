@@ -29,9 +29,16 @@
     }
   }
 
-  .acc-id {
+  .acc-id,
+  .copy-str {
     font-weight: bold;
-    color: colours.$primary;
+    color: colours.$primary-light;
+  }
+
+  .copy-str {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .cag-balance {

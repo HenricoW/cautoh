@@ -34,7 +34,7 @@ const Header = () => {
               <div className={styles["acc-balance"]} onClick={() => copyText(textToCopy)}>
                 <p>tokenID:</p>
                 <p>{textToCopy}</p>
-                <p>{copyStatus}</p>
+                <p className={styles["copy-str"]}>{copyStatus}</p>
               </div>
               <div className={styles["acc-balance"]}>
                 <p>hbar balance:</p>
