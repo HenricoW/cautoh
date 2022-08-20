@@ -1,4 +1,5 @@
-export const baseURL = "https://cauto-api.vercel.app/api/";
+export const baseURL =
+  process.env.NODE_ENV === "development" ? "http://localhost:3001/" : "https://cautoh-api.herokuapp.com/";
 export const yearsPt = "years";
 export const makesPt = "makes";
 export const modelsPt = "models";
