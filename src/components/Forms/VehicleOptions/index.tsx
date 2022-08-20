@@ -10,6 +10,7 @@ interface RenderVehicleOptionsProps {
 }
 
 const RenderVehicleOptions = ({ name, arrayData, setterStr, setterNum }: RenderVehicleOptionsProps) => {
+  // console.log("[Rendering] vehicle options:", name);
   return (
     <select
       className={styles.select}

@@ -9,6 +9,7 @@ interface BaseBtnProps {
 }
 
 const BaseBtn = ({ disabled = false, onClick, children }: BaseBtnProps) => {
+  // console.log("[Rendering] button:", children);
   return (
     <button className={styles["config-btn"]} disabled={disabled} onClick={onClick}>
       {children}
@@ -16,4 +17,4 @@ const BaseBtn = ({ disabled = false, onClick, children }: BaseBtnProps) => {
   );
 };
 
-export default BaseBtn;
+export default React.memo(BaseBtn);
