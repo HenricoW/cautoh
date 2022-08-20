@@ -9,6 +9,7 @@ interface CurrentVehicleProps {
 }
 
 const CurrentVehicle = ({ currVehicle }: CurrentVehicleProps) => {
+  // console.log("[Rendering] current vehicle");
   return (
     <div>
       {currVehicle && (
@@ -25,4 +26,4 @@ const CurrentVehicle = ({ currVehicle }: CurrentVehicleProps) => {
   );
 };
 
-export default CurrentVehicle;
+export default React.memo(CurrentVehicle);

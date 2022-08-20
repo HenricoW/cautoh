@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import BaseBtn from "../components/Buttons/Button";
 import RouteBtn from "../components/Buttons/RouteBtn";
@@ -11,6 +11,7 @@ import type { ConfigData } from "../types";
 import { getConfigs, getMakes, getModels, getYears } from "../utils/vehicle";
 
 const Home: NextPage = () => {
+  // console.log("[Rendering] root index");
   const [allYears, setAllYears] = useState<string[]>([]);
   const [allMakes, setAllMakes] = useState<string[]>([]);
   const [allModels, setAllModels] = useState<string[]>([]);
@@ -42,11 +43,11 @@ const Home: NextPage = () => {
     getConfigs(year, make, model).then((configs) => setAllConfigs(configs));
   }, [model]);
 
-  const onSelectFinish = () => {
-    console.log(allConfigs[idxSelected]);
-    localStorage.setItem("vehConfig", JSON.stringify(allConfigs[idxSelected]));
+  const onSelectFinish = useCallback(() => {
+    const selectedVeh = allConfigs[idxSelected];
+    if (selectedVeh) localStorage.setItem("vehConfig", JSON.stringify(selectedVeh));
     router.push("compute");
-  };
+  }, [idxSelected, allConfigs]);
 
   const router = useRouter();
   return (
